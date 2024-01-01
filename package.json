@@ -11,7 +11,8 @@
   "dependencies": {
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.0.4"
+    "next": "14.0.4",
+    "lightweight-charts": "^4.1.1"
   },
   "devDependencies": {
     "typescript": "^5",
