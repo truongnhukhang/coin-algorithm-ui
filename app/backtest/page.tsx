@@ -1,8 +1,19 @@
+'use client'
 import { createChart } from 'lightweight-charts';
 import Image from 'next/image'
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 export default function BackTestRequestPage() {
+    const firstDateOfTheYear = new Date().getFullYear()+'-01'+'-01'
+    const toDay = Intl.DateTimeFormat('sv-SE').format(new Date())
+    const [backTestRequest,setBackTestRequest] = useState({
+        startDate : firstDateOfTheYear,
+        endDate : toDay,
+        exchange : 'binance',
+        botOrderType : 'market',
+        mainInterval : '5m',
+        indicatorParams: {},
+    })
 
     return (
         <div className="md:container flex-col">
@@ -18,13 +29,23 @@ export default function BackTestRequestPage() {
                         <label className="basis-1/4 text-gray-700 text-sm font-bold mb-2 mr-3" htmlFor="text1">
                             Start date
                         </label>
-                        <input className="flex-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="text1" type="text" placeholder="yyyy-mm-dd (2021-01-01)" />
+                        <input className="flex-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                        id="text1" type="text" placeholder="yyyy-mm-dd (2021-01-01)" value={backTestRequest.startDate} onChange={e => {
+                            const temp = backTestRequest
+                            temp.startDate = e.target.value
+                            setBackTestRequest(temp)
+                        }} />
                     </div>
                     <div className="mb-4 flex flex-row items-center">
                         <label className="basis-1/4 text-gray-700 text-sm font-bold mb-2 mr-3" htmlFor="text1">
                             End date
                         </label>
-                        <input className="flex-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="text1" type="text" placeholder="yyyy-mm-dd (2023-12-30)" />
+                        <input className="flex-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                        id="text1" type="text" placeholder="yyyy-mm-dd (2023-12-30)" value={backTestRequest.endDate} onChange={e => {
+                            const temp = backTestRequest
+                            temp.endDate = e.target.value
+                            setBackTestRequest(temp)
+                        }} />
                     </div>
 
                     <div className="mb-4 flex  flex-row items-center">
@@ -32,9 +53,14 @@ export default function BackTestRequestPage() {
                             Exchange
                         </label>
                         <div className="relative">
-                            <select className="flex-1 appearance-none w-full bg-white border border-gray-200 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="exchange">
-                                <option>Binance</option>
-                                <option>OKX</option>
+                            <select name='exchange' value={backTestRequest.exchange} onChange={e => {
+                                const temp = backTestRequest
+                                temp.exchange = e.target.value
+                                setBackTestRequest(temp)
+                            }}
+                            className="flex-1 appearance-none w-full bg-white border border-gray-200 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="exchange">
+                                <option value="binance">Binance</option>
+                                <option value="okx">OKX</option>
                             </select>
                             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                                 <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 12l-6-5h12l-6 5z" /></svg>
@@ -60,9 +86,14 @@ export default function BackTestRequestPage() {
                             Candle Interval
                         </label>
                         <div className="relative">
-                            <select className="flex-1 appearance-none w-full bg-white border border-gray-200 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="candle-interval">
-                                <option>5m</option>
-                                <option>15m</option>
+                            <select name='mainInterval' value={backTestRequest.mainInterval} onChange={e => {
+                                const temp = backTestRequest
+                                temp.mainInterval = e.target.value
+                                setBackTestRequest(temp)
+                            }}
+                            className="flex-1 appearance-none w-full bg-white border border-gray-200 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="candle-interval">
+                                <option value="5m">5m</option>
+                                <option value="15m">15m</option>
                             </select>
                             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                                 <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 12l-6-5h12l-6 5z" /></svg>
