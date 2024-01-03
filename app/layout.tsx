@@ -18,23 +18,25 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <div className="md:container md:mx-auto  bg-white">
-        <div className="flex flex-row">
-          <div className="basis-1/4 border-r-2 min-h-lvh">
-            <Navbar ></Navbar>
+      <body>
+        <div className="md:container md:mx-auto  bg-white" suppressHydrationWarning={true}>
+          <div className="flex flex-row">
+            <div className="basis-1/4 border-r-2 min-h-lvh">
+              <Navbar ></Navbar>
+            </div>
+            <main className="basis-3/4 flex flex-col">
+              <div className='min-height: 100vh;'>
+                {children}
+              </div>
+              <div className='w-full mt-auto'>
+                <Footer />
+              </div>
+
+            </main>
           </div>
-          <main className="basis-3/4 flex flex-col">
-            <div className='min-height: 100vh;'>
-              {children}
-            </div>
-            <div className='w-full mt-auto'>
-              <Footer />
-            </div>
 
-          </main>
         </div>
-
-      </div>
+      </body>
     </html>
   )
 }
