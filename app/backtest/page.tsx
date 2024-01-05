@@ -36,11 +36,11 @@ export default function BackTestRequestPage() {
                         </label>
                         <input className="flex-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
                         id="text1" type="text" placeholder="yyyy-mm-dd (2021-01-01)" value={backTestRequest.startDate} onChange={e => {
-                            
-                            const temp = backTestRequest
-                            temp.startDate = e.target.value
-                            setBackTestRequest(temp);
-                            console.log(backTestRequest)
+                            setBackTestRequest({
+                                ...backTestRequest,
+                                startDate:e.target.value
+                                }
+                            )
                         }} />
                     </div>
                     <div className="mb-4 flex flex-row items-center">
@@ -49,9 +49,11 @@ export default function BackTestRequestPage() {
                         </label>
                         <input className="flex-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
                         id="text1" type="text" placeholder="yyyy-mm-dd (2023-12-30)" value={backTestRequest.endDate} onChange={e => {
-                            const temp = backTestRequest
-                            temp.endDate = e.target.value
-                            setBackTestRequest(temp)
+                            setBackTestRequest({
+                                ...backTestRequest,
+                                endDate:e.target.value
+                                }
+                            )
                         }} />
                     </div>
 
@@ -61,9 +63,11 @@ export default function BackTestRequestPage() {
                         </label>
                         <div className="relative">
                             <select name='exchange' value={backTestRequest.exchange} onChange={e => {
-                                const temp = backTestRequest
-                                temp.exchange = e.target.value
-                                setBackTestRequest(temp)
+                                setBackTestRequest({
+                                    ...backTestRequest,
+                                    exchange:e.target.value
+                                    }
+                                )
                             }}
                             className="flex-1 appearance-none w-full bg-white border border-gray-200 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="exchange">
                                 <option value="binance">Binance</option>
@@ -79,7 +83,14 @@ export default function BackTestRequestPage() {
                             Bot Order Type
                         </label>
                         <div className="relative">
-                            <select className="flex-1 appearance-none w-full bg-white border border-gray-200 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="bot-order-type">
+                            <select className="flex-1 appearance-none w-full bg-white border border-gray-200 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="bot-order-type"
+                            onChange={e => {
+                                setBackTestRequest({
+                                    ...backTestRequest,
+                                    botOrderType:e.target.value
+                                    }
+                                )
+                            }}>
                                 <option>Market</option>
                                 <option>Limit Order</option>
                             </select>
@@ -94,9 +105,11 @@ export default function BackTestRequestPage() {
                         </label>
                         <div className="relative">
                             <select name='mainInterval' value={backTestRequest.mainInterval} onChange={e => {
-                                const temp = backTestRequest
-                                temp.mainInterval = e.target.value
-                                setBackTestRequest(temp)
+                                setBackTestRequest({
+                                    ...backTestRequest,
+                                    mainInterval:e.target.value
+                                    }
+                                )
                             }}
                             className="flex-1 appearance-none w-full bg-white border border-gray-200 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="candle-interval">
                                 <option value="5m">5m</option>
@@ -124,9 +137,11 @@ export default function BackTestRequestPage() {
                         <div className='block'>
                             <textarea placeholder={`rsi=14,36,48\nsma=34,55,89`} className="block text-sm appearance-none border rounded mb-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                              rows="5" cols="50" onChange={e=>{
-                                const temp = backTestRequest
-                                temp.indicatorParams = e.target.value
-                                setBackTestRequest(temp)
+                                setBackTestRequest({
+                                    ...backTestRequest,
+                                    indicatorParams:e.target.value
+                                    }
+                                )
                              }}>
                             </textarea>
                         </div>
