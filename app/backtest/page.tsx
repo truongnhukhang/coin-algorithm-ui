@@ -14,7 +14,8 @@ export default function BackTestRequestPage() {
         exchange: 'binance',
         botOrderType: 'MARKET',
         mainInterval: '5m',
-        indicatorParams: ""
+        indicatorParam: "",
+        initBar: '',
     })
     async function upload(formData: FormData) {
         try {
@@ -35,11 +36,15 @@ export default function BackTestRequestPage() {
         const formData = new FormData();
         const inputElement = document.querySelector('input[type="file"]') as HTMLInputElement;
         const file = inputElement?.files?.item(0) as File;
-        const regex = /([a-zA-Z0-9]+)=(-?\d+(?:\.\d+)?)/g;
-        const matchRegex = backTestRequest.indicatorParams.match(regex) as RegExpMatchArray;
-        let indicatorObj = [{}]
-        if (matchRegex) {
-            indicatorObj = matchRegex.map(e => { let obj = { [e.split('=')[0]]: [e.split('=')[1]] }; return obj; })
+        const regex = /([a-zA-Z0-9]+)=((?:-?\d+\.\d+,)+)(?:;|\n)/g;
+        const indicatorObj = {}
+        if (backTestRequest.indicatorParam != '') {
+            const indicators = backTestRequest.indicatorParam.split('\n')
+            indicators.map(s => {
+                const k = s.split('=')[0]
+                const v = s.split('=')[1]
+                indicatorObj[k] = v
+            })
         }
         formData.append("backTestRequest", JSON.stringify({
             starDateStr: backTestRequest.startDate,
@@ -47,7 +52,7 @@ export default function BackTestRequestPage() {
             exchange: backTestRequest.exchange,
             botOrderType: backTestRequest.botOrderType,
             mainInterval: backTestRequest.mainInterval,
-            indicatorParams: indicatorObj
+            indicatorParam: indicatorObj
         }));
         formData.append("botJar", file);
         upload(formData)
@@ -163,7 +168,19 @@ export default function BackTestRequestPage() {
                             </label>
                             <input className="flex-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="file" type="file" />
                         </div>
-
+                        <div className="mb-4 flex flex-row items-center">
+                            <label className="basis-1/4 text-gray-700 text-sm font-bold mb-2 mr-3" htmlFor="text1">
+                                Init bar
+                            </label>
+                            <input className="flex-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                id="text1" type="text" placeholder="yyyy-mm-dd (2023-12-30)" value={backTestRequest.endDate} onChange={e => {
+                                    setBackTestRequest({
+                                        ...backTestRequest,
+                                        endDate: e.target.value
+                                    }
+                                    )
+                                }} />
+                        </div>
                         <div className="mb-4 block items-center">
                             <div className="flex items-center  mb-4" >
                                 <p className='text-gray-700 text-sm font-bold mb-2 mr-3'>Indicator params</p>
@@ -173,7 +190,7 @@ export default function BackTestRequestPage() {
                                     rows="5" cols="50" onChange={e => {
                                         setBackTestRequest({
                                             ...backTestRequest,
-                                            indicatorParams: e.target.value
+                                            indicatorParam: e.target.value
                                         }
                                         )
                                     }}>
