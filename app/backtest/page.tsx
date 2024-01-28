@@ -3,7 +3,8 @@ import { log } from 'console';
 import { createChart } from 'lightweight-charts';
 import Image from 'next/image'
 import { FormEvent, useRef, useState } from 'react';
-
+import { DefaultApi } from '../data/apis';
+import { BackTestRequestFromJSON, BackTestResponseFromJSON, BackTestResponse } from '../data/models';
 export default function BackTestRequestPage() {
     const [isLoading, setLoading] = useState(false)
     const firstDateOfTheYear = new Date().getFullYear() + '-01' + '-01'
@@ -17,6 +18,7 @@ export default function BackTestRequestPage() {
         indicatorParam: "",
         initBar: '',
     })
+    const [backTestResult, setBackTestResult] = useState({})
     async function upload(formData: FormData) {
         try {
             setLoading(true)
@@ -25,6 +27,7 @@ export default function BackTestRequestPage() {
                 body: formData,
             });
             const result = await response.json();
+            setBackTestResult(BackTestResponseFromJSON(result))
         } catch (error) {
             console.error("Error:", error);
         } finally {
@@ -173,10 +176,10 @@ export default function BackTestRequestPage() {
                                 Init bar
                             </label>
                             <input className="flex-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                id="text1" type="text" placeholder="yyyy-mm-dd (2023-12-30)" value={backTestRequest.endDate} onChange={e => {
+                                id="text1" type="text" placeholder="yyyy-mm-dd (2023-12-30)" value={backTestRequest.initBar} onChange={e => {
                                     setBackTestRequest({
                                         ...backTestRequest,
-                                        endDate: e.target.value
+                                        initBar: e.target.value
                                     }
                                     )
                                 }} />
