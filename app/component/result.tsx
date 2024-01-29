@@ -9,18 +9,17 @@ function buildMarkerFrom(tradeTime: number, type: string, status: string, profit
     'shape': SeriesMarkerShape,
     'text': string
 } {
-    var obj = {};
     if (type === "sell") {
         if (status === "exit") {
-            obj = {
+            return {
                 time: tradeTime / 1000 as UTCTimestamp,
                 position: "aboveBar",
                 color: profit < 0 ? "#e91e63" : "#80C89B",
                 shape: "arrowDown",
-                text: profit
+                text:  String(profit)
             };
         } else {
-            obj = {
+            return {
                 time: tradeTime / 1000 as UTCTimestamp,
                 position: "aboveBar",
                 color: "#e91e63",
@@ -30,15 +29,15 @@ function buildMarkerFrom(tradeTime: number, type: string, status: string, profit
         }
     } else {
         if (status === "exit") {
-            obj = {
+            return {
                 time: tradeTime / 1000 as UTCTimestamp,
                 position: "belowBar",
                 color: profit < 0 ? "#e91e63" : "#80C89B",
                 shape: "arrowUp",
-                text: profit
+                text: String(profit)
             };
         } else {
-            obj = {
+            return {
                 time: tradeTime / 1000 as UTCTimestamp,
                 position: "belowBar",
                 color: "#2196F3",
@@ -47,7 +46,6 @@ function buildMarkerFrom(tradeTime: number, type: string, status: string, profit
             };
         }
     }
-    return obj;
 }
 
 export default function backTestResult(backTestResponse: BackTestResponse) {
