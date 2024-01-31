@@ -1,4 +1,4 @@
-import { LegacyRef, useRef } from "react"
+import { LegacyRef, useEffect, useRef } from "react"
 import { BackTestResponse } from "../data/models"
 import { CandlestickData, IChartApi, IChartApiBase, SeriesMarkerPosition, SeriesMarkerShape, UTCTimestamp, createChart } from "lightweight-charts"
 
@@ -52,30 +52,40 @@ function buildMarkerFrom(tradeTime: number, type: string, status: string, profit
 
 export default function backTestResult(backTestResponse: BackTestResponse) {
     const chartRef = useRef(null)
-    const balanceRef = useRef({})
-    if (chartRef.current) {
-        const chart = createChart(chartRef.current)
-        const mainSeries = chart.addCandlestickSeries();
-        // Set the data for the Main Series
-        if (backTestResponse.candleDtos) {
-            const candles = backTestResponse.candleDtos.map((c) => {
-                return {
-                    time: c.beginTime / 1000 as UTCTimestamp,
-                    open: c.open,
-                    close: c.close,
-                    high: c.high,
-                    low: c.low
-                };
-            })
-            mainSeries.setData(candles)
-        }
-        if (backTestResponse.tradePointDtos) {
-            mainSeries.setMarkers(backTestResponse.tradePointDtos.map((p) => {
-                return buildMarkerFrom(p.tradeTime, p.type, p.status, p.pnl);
-            }))
-        }
+    const balanceRef = useRef(null)
+    const firstRender = useRef(true)
+    useEffect(() => {
+        if (chartRef.current && firstRender.current) {
+            const chart = createChart(chartRef.current)
+            const mainSeries = chart.addCandlestickSeries();
+            // Set the data for the Main Series
+            if (backTestResponse.candleDtos) {
+                const candles = backTestResponse.candleDtos.map((c) => {
+                    return {
+                        time: c.beginTime / 1000 as UTCTimestamp,
+                        open: c.open,
+                        close: c.close,
+                        high: c.high,
+                        low: c.low
+                    };
+                })
+                mainSeries.setData(candles)
+            }
+            if (backTestResponse.tradePointDtos) {
+                mainSeries.setMarkers(backTestResponse.tradePointDtos.map((p) => {
+                    return buildMarkerFrom(p.tradeTime, p.type, p.status, p.pnl);
+                }))
+            }
 
-    }
+        }
+        if (balanceRef.current && firstRender) {
+            const balanceChart = createChart(balanceRef.current)
+            const balanceLine = balanceChart.addLineSeries();
+
+        }
+        firstRender.current = false
+    })
+
     return (<>
         <div>
             <div id="chart" ref={chartRef}></div>
