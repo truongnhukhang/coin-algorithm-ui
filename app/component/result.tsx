@@ -16,7 +16,7 @@ function buildMarkerFrom(tradeTime: number, type: string, status: string, profit
                 position: "aboveBar",
                 color: profit < 0 ? "#e91e63" : "#80C89B",
                 shape: "arrowDown",
-                text:  String(profit)
+                text: String(profit)
             };
         } else {
             return {
@@ -48,17 +48,18 @@ function buildMarkerFrom(tradeTime: number, type: string, status: string, profit
     }
 }
 
-export default function backTestResult(backTestResponse: BackTestResponse) {
+export default function BackTestResult(backTestResponse: BackTestResponse) {
     const chartRef = useRef(null)
     const balanceRef = useRef(null)
     const firstRender = useRef(true)
+    const candleDtos = backTestResponse.candleDtos;
     useEffect(() => {
         if (chartRef.current && firstRender.current) {
             const chart = createChart(chartRef.current)
             const mainSeries = chart.addCandlestickSeries();
             // Set the data for the Main Series
-            if (backTestResponse.candleDtos) {
-                const candles = backTestResponse.candleDtos.map((c) => {
+            if (candleDtos) {
+                const candles = candleDtos.map((c) => {
                     return {
                         time: c.beginTime / 1000 as UTCTimestamp,
                         open: c.open,
@@ -79,7 +80,15 @@ export default function backTestResult(backTestResponse: BackTestResponse) {
         if (balanceRef.current && firstRender) {
             const balanceChart = createChart(balanceRef.current)
             const balanceLine = balanceChart.addLineSeries();
-
+            if (backTestResponse.capacityTimeChart) {
+                const lines: { 'time': UTCTimestamp, 'value': Number }[] = []
+                for (let i = 0; i < candleDtos.length; i++) {
+                    const candle = candleDtos[i]
+                    const balanceVal = backTestResponse.capacityTimeChart[i]
+                    lines.push({ time: candle.beginTime / 1000 as UTCTimestamp, value: Number(balanceVal) })
+                }
+                balanceLine.setData(lines)
+            }
         }
         firstRender.current = false
     })
