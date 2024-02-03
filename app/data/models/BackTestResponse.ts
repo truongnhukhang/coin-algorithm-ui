@@ -18,6 +18,10 @@ import {
     BackTestRequestFromJSON,
     BackTestRequestFromJSONTyped,
     BackTestRequestToJSON,
+    BalanceDto,
+    BalanceDtoFromJSON,
+    BalanceDtoFromJSONTyped,
+    BalanceDtoToJSON,
     CandleDto,
     CandleDtoFromJSON,
     CandleDtoFromJSONTyped,
@@ -98,34 +102,16 @@ export interface BackTestResponse {
     candleDtos: Array<CandleDto>;
     /**
      * 
-     * @type {{ [key: string]: number; }}
-     * @memberof BackTestResponse
-     */
-    monthPerformance?: { [key: string]: number; };
-    /**
-     * 
-     * @type {{ [key: string]: number; }}
-     * @memberof BackTestResponse
-     */
-    capacityOverMonth?: { [key: string]: number; };
-    /**
-     * 
-     * @type {{ [key: string]: object; }}
-     * @memberof BackTestResponse
-     */
-    misc?: { [key: string]: object; };
-    /**
-     * 
      * @type {Array<TradePointDto>}
      * @memberof BackTestResponse
      */
     tradePointDtos?: Array<TradePointDto>;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<BalanceDto>}
      * @memberof BackTestResponse
      */
-    capacityTimeChart?: Array<string>;
+    balanceDtos?: Array<BalanceDto>;
     /**
      * 
      * @type {DrawdownDto}
@@ -171,11 +157,8 @@ export function BackTestResponseFromJSONTyped(json: any, ignoreDiscriminator: bo
         'avglooseStreak': json['avglooseStreak'],
         'avgWinStreak': json['avgWinStreak'],
         'candleDtos': ((json['candleDtos'] as Array<any>).map(CandleDtoFromJSON)),
-        'monthPerformance': !exists(json, 'monthPerformance') ? undefined : json['monthPerformance'],
-        'capacityOverMonth': !exists(json, 'capacityOverMonth') ? undefined : json['capacityOverMonth'],
-        'misc': !exists(json, 'misc') ? undefined : json['misc'],
         'tradePointDtos': !exists(json, 'tradePointDtos') ? undefined : ((json['tradePointDtos'] as Array<any>).map(TradePointDtoFromJSON)),
-        'capacityTimeChart': !exists(json, 'capacityTimeChart') ? undefined : json['capacityTimeChart'],
+        'balanceDtos': !exists(json, 'balanceDtos') ? undefined : ((json['balanceDtos'] as Array<any>).map(BalanceDtoFromJSON)),
         'drawDownVal': !exists(json, 'drawDownVal') ? undefined : DrawdownDtoFromJSON(json['drawDownVal']),
         'drawdownPer': !exists(json, 'drawdownPer') ? undefined : DrawdownDtoFromJSON(json['drawdownPer']),
         'looseStreak': !exists(json, 'looseStreak') ? undefined : StreakDtoFromJSON(json['looseStreak']),
@@ -201,11 +184,8 @@ export function BackTestResponseToJSON(value?: BackTestResponse | null): any {
         'avglooseStreak': value.avglooseStreak,
         'avgWinStreak': value.avgWinStreak,
         'candleDtos': ((value.candleDtos as Array<any>).map(CandleDtoToJSON)),
-        'monthPerformance': value.monthPerformance,
-        'capacityOverMonth': value.capacityOverMonth,
-        'misc': value.misc,
         'tradePointDtos': value.tradePointDtos === undefined ? undefined : ((value.tradePointDtos as Array<any>).map(TradePointDtoToJSON)),
-        'capacityTimeChart': value.capacityTimeChart,
+        'balanceDtos': value.balanceDtos === undefined ? undefined : ((value.balanceDtos as Array<any>).map(BalanceDtoToJSON)),
         'drawDownVal': DrawdownDtoToJSON(value.drawDownVal),
         'drawdownPer': DrawdownDtoToJSON(value.drawdownPer),
         'looseStreak': StreakDtoToJSON(value.looseStreak),

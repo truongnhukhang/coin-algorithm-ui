@@ -1,5 +1,6 @@
 export * from './BackTestRequest';
 export * from './BackTestResponse';
+export * from './BalanceDto';
 export * from './BotOrderType';
 export * from './CandleDto';
 export * from './DrawdownDto';

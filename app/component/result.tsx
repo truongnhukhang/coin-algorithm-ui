@@ -1,4 +1,5 @@
-import { LegacyRef, useEffect, useRef } from "react"
+'use client'
+import { LegacyRef, useEffect, useRef, useState } from "react"
 import { BackTestResponse } from "../data/models"
 import { CandlestickData, IChartApi, IChartApiBase, SeriesMarkerPosition, SeriesMarkerShape, UTCTimestamp, createChart } from "lightweight-charts"
 
@@ -49,13 +50,15 @@ function buildMarkerFrom(tradeTime: number, type: string, status: string, profit
 }
 
 export default function BackTestResult(backTestResponse: BackTestResponse) {
-    const chartRef = useRef(null)
-    const balanceRef = useRef(null)
-    const firstRender = useRef(true)
+    const balanceRef = useRef()
+    const chartRef = useRef()
+    const [chart, setChart] = useState({} as IChartApi)
+    const firstChartRender = useRef(true)
+    const firstBalanceRender = useRef(true)
     const candleDtos = backTestResponse.candleDtos;
     useEffect(() => {
-        if (chartRef.current && firstRender.current) {
-            const chart = createChart(chartRef.current)
+        if (chartRef.current && firstChartRender.current) {
+            const chart = createChart(chartRef.current, { height: 400 })
             const mainSeries = chart.addCandlestickSeries();
             // Set the data for the Main Series
             if (candleDtos) {
@@ -75,28 +78,42 @@ export default function BackTestResult(backTestResponse: BackTestResponse) {
                     return buildMarkerFrom(p.tradeTime, p.type, p.status, p.pnl);
                 }))
             }
+            firstChartRender.current = false
+
 
         }
-        if (balanceRef.current && firstRender) {
-            const balanceChart = createChart(balanceRef.current)
+        if (balanceRef.current && firstBalanceRender.current) {
+            const balanceChart = createChart(balanceRef.current, { height: 400 })
             const balanceLine = balanceChart.addLineSeries();
-            if (backTestResponse.capacityTimeChart) {
+            if (backTestResponse.balanceDtos) {
                 const lines: { 'time': UTCTimestamp, 'value': Number }[] = []
-                for (let i = 0; i < candleDtos.length; i++) {
-                    const candle = candleDtos[i]
-                    const balanceVal = backTestResponse.capacityTimeChart[i]
-                    lines.push({ time: candle.beginTime / 1000 as UTCTimestamp, value: Number(balanceVal) })
+                for (let i = 0; i < backTestResponse.balanceDtos.length; i++) {
+                    const balanceVal = backTestResponse.balanceDtos[i]
+                    lines.push({ time: balanceVal.time / 1000 as UTCTimestamp, value: balanceVal.value })
                 }
                 balanceLine.setData(lines)
             }
+            firstBalanceRender.current = false
         }
-        firstRender.current = false
-    })
+    }, [])
 
     return (<>
         <div>
-            <div id="chart" ref={chartRef}></div>
-            <div id="balance" ref={balanceRef}></div>
+            <div id="trading-information" className="flex flex-col">
+                <div className='font-bold text-gray-900 text-xl  px-8 pt-6 pb-8 mb-4'>
+                    <p className=''>Trade result chart</p>
+                </div>
+                <div id="chart-container">
+                    <div id="chart" ref={chartRef}></div>
+                </div>
+            </div>
+            <div id="balance-information" className="flex flex-col">
+                <div className='font-bold text-gray-900 text-xl  px-8 pt-6 pb-8 mb-4'>
+                    <p className=''>Balance chart</p>
+                </div>
+                <div id="balance" ref={balanceRef}></div>
+            </div>
+
         </div>
     </>)
 } 

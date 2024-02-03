@@ -209,12 +209,13 @@ export default function BackTestRequestPage() {
                     </form>
                 </div>
             </div>
-            <div className={"md:container flex-col"}>
-                <div className='font-thin text-gray-900 text-2xl font-mono px-8 pt-6 pb-8 mb-4'>
-                    <p className='underline underline-offset-8 uppercase '>Back test result</p>
-                </div>
-                <BackTestResult {...backTestResult as BackTestResponse}></BackTestResult>
-            </div>
+            {!backTestResult['candleDtos'] ? '' :
+                <div className={"md:container flex-col"}>
+                    <div className='font-thin text-gray-900 text-2xl font-mono px-8 pt-6 pb-8 mb-4'>
+                        <p className='underline underline-offset-8 uppercase '>Back test result</p>
+                    </div>
+                    <BackTestResult {...backTestResult as BackTestResponse}></BackTestResult>
+                </div>}
         </div>
 
     )
