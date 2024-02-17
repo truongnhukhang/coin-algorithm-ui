@@ -113,7 +113,14 @@ export default function BackTestResult(backTestResponse: BackTestResponse) {
                 </div>
                 <div id="balance" ref={balanceRef}></div>
             </div>
+            <div id="trade-stats" className="flex flex-col">
+                <div className='font-bold text-gray-900 text-xl  px-8 pt-6 pb-8 mb-4'>
+                    <p className=''>Trade statistic</p>
+                </div>
+                <div id="streak-stats" className="flex">
 
+                </div>
+            </div>
         </div>
     </>)
 } 
