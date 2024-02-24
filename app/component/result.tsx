@@ -149,11 +149,11 @@ export default function BackTestResult(backTestResponse: BackTestResponse) {
                         </tr>
                         <tr>
                             <th className="border-2 px-3 py-3">Max drawdown value</th>
-                            <td className="border-2 px-3 py-3">{backTestResponse.drawDownVal?.value.toFixed(2)} - Start from {new Date(Number(backTestResponse.drawDownVal?.startDate)).toUTCString()} to {new Date(Number(backTestResponse.drawDownVal?.endDate)).toUTCString()}</td>
+                            <td className="border-2 px-3 py-3">{backTestResponse.drawDownVal?.value.toFixed(2)} - Start from {new Date(Number(backTestResponse.drawDownVal?.startDate)).toISOString()} to {new Date(Number(backTestResponse.drawDownVal?.endDate)).toISOString()}</td>
                         </tr>
                         <tr>
                             <th className="border-2 px-3 py-3">Max drawdown percent</th>
-                            <td className="border-2 px-3 py-3">{backTestResponse.drawdownPer?.value.toFixed(3) * 100}% - Start from {new Date(Number(backTestResponse.drawdownPer?.startDate)).toUTCString()} to {new Date(Number(backTestResponse.drawdownPer?.endDate)).toUTCString()}</td>
+                            <td className="border-2 px-3 py-3">{backTestResponse.drawdownPer?.value.toFixed(3) * 100}% - Start from {new Date(Number(backTestResponse.drawdownPer?.startDate)).toISOString()} to {new Date(Number(backTestResponse.drawdownPer?.endDate)).toISOString()}</td>
                         </tr>
                     </table>
                 </div>
