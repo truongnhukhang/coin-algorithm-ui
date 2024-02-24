@@ -49,6 +49,24 @@ export interface TradePointDto {
      * @memberof TradePointDto
      */
     pnl: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof TradePointDto
+     */
+    log: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof TradePointDto
+     */
+    fee: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof TradePointDto
+     */
+    amount: number;
 }
 
 export function TradePointDtoFromJSON(json: any): TradePointDto {
@@ -66,6 +84,9 @@ export function TradePointDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'status': json['status'],
         'type': json['type'],
         'pnl': json['pnl'],
+        'log': json['log'],
+        'fee': json['fee'],
+        'amount': json['amount'],
     };
 }
 
@@ -83,6 +104,9 @@ export function TradePointDtoToJSON(value?: TradePointDto | null): any {
         'status': value.status,
         'type': value.type,
         'pnl': value.pnl,
+        'log': value.log,
+        'fee': value.fee,
+        'amount': value.amount,
     };
 }
 
