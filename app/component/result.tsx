@@ -97,7 +97,7 @@ export default function BackTestResult(backTestResponse: BackTestResponse) {
         }
     }, [])
 
-    return (<>
+    return (
         <div>
             <div id="trading-information" className="flex flex-col">
                 <div className='font-bold text-gray-900 text-xl  px-8 pt-6 pb-8 mb-4'>
@@ -117,47 +117,79 @@ export default function BackTestResult(backTestResponse: BackTestResponse) {
                 <div className='font-bold text-gray-900 text-xl  px-8 pt-6 pb-8 mb-4'>
                     <p className=''>Trade statistic</p>
                 </div>
-                <div id="streak-stats" className="flex flex-col px-8 ">
-                    <table className="table-auto w-1/2 text-left">
+                <div id="streak-stats" className="flex flex-col px-8 relative overflow-x-auto">
+                    <table className="table-auto w-2/3 text-left">
                         <tr>
-                            <th>Profit - Fee = PNL</th>
-                            <td>{backTestResponse.pnl.toFixed(2)} - {backTestResponse.fee.toFixed(2)} = {backTestResponse.total.toFixed(2)}</td>
+                            <th className="border-2 px-3 py-3">Profit - Fee = PNL</th>
+                            <td className="border-2 px-3 py-3">{backTestResponse.pnl.toFixed(2)} - {backTestResponse.fee.toFixed(2)} = {backTestResponse.total.toFixed(2)}</td>
                         </tr>
                         <tr>
-                            <th>win trades</th>
-                            <td>{backTestResponse.numWin}</td>
+                            <th className="border-2 px-3 py-3">win trades</th>
+                            <td className="border-2 px-3 py-3">{backTestResponse.numWin}</td>
                         </tr>
                         <tr>
-                            <th>loss trades</th>
-                            <td>{backTestResponse.numLoose}</td>
+                            <th className="border-2 px-3 py-3">loss trades</th>
+                            <td className="border-2 px-3 py-3">{backTestResponse.numLoose}</td>
                         </tr>
                         <tr>
-                            <th>Win streak</th>
-                            <td>{backTestResponse.winStreak?.count} wins , PNL = {backTestResponse.winStreak?.pnl.toFixed(2)}$</td>
+                            <th className="border-2 px-3 py-3">Win streak</th>
+                            <td className="border-2 px-3 py-3">{backTestResponse.winStreak?.count} wins , PNL = {backTestResponse.winStreak?.pnl.toFixed(2)}$</td>
                         </tr>
                         <tr>
-                            <th>Loss streak</th>
-                            <td>{backTestResponse.looseStreak?.count} lost , PNL = {backTestResponse.looseStreak?.pnl.toFixed(2)}$</td>
+                            <th className="border-2 px-3 py-3">Loss streak</th>
+                            <td className="border-2 px-3 py-3">{backTestResponse.looseStreak?.count} lost , PNL = {backTestResponse.looseStreak?.pnl.toFixed(2)}$</td>
                         </tr>
                         <tr>
-                            <th>avg win streak</th>
-                            <td>{backTestResponse.avgWinStreak.toFixed(2)}</td>
+                            <th className="border-2 px-3 py-3">avg win streak</th>
+                            <td className="border-2 px-3 py-3">{backTestResponse.avgWinStreak.toFixed(2)}</td>
                         </tr>
                         <tr>
-                            <th>avg loss streak</th>
-                            <td>{backTestResponse.avglooseStreak.toFixed(2)}</td>
+                            <th className="border-2 px-3 py-3">avg loss streak</th>
+                            <td className="border-2 px-3 py-3">{backTestResponse.avglooseStreak.toFixed(2)}</td>
                         </tr>
                         <tr>
-                            <th>Max drawdown value</th>
-                            <td>{backTestResponse.drawDownVal?.value.toFixed(2)} - Start from {new Date(Number(backTestResponse.drawDownVal?.startDate)).toLocaleDateString()} to {new Date(Number(backTestResponse.drawDownVal?.endDate)).toLocaleDateString()}</td>
+                            <th className="border-2 px-3 py-3">Max drawdown value</th>
+                            <td className="border-2 px-3 py-3">{backTestResponse.drawDownVal?.value.toFixed(2)} - Start from {new Date(Number(backTestResponse.drawDownVal?.startDate)).toUTCString()} to {new Date(Number(backTestResponse.drawDownVal?.endDate)).toUTCString()}</td>
                         </tr>
                         <tr>
-                            <th>Max drawdown percent</th>
-                            <td>{backTestResponse.drawdownPer?.value.toFixed(3) * 100}% - Start from {new Date(Number(backTestResponse.drawdownPer?.startDate)).toLocaleDateString()} to {new Date(Number(backTestResponse.drawdownPer?.endDate)).toLocaleDateString()}</td>
+                            <th className="border-2 px-3 py-3">Max drawdown percent</th>
+                            <td className="border-2 px-3 py-3">{backTestResponse.drawdownPer?.value.toFixed(3) * 100}% - Start from {new Date(Number(backTestResponse.drawdownPer?.startDate)).toUTCString()} to {new Date(Number(backTestResponse.drawdownPer?.endDate)).toUTCString()}</td>
                         </tr>
                     </table>
                 </div>
             </div>
+            <div id="trade-data" className="flex flex-col">
+                <div className='font-bold text-gray-900 text-xl  px-8 pt-6 pb-8 mb-4'>
+                    <p className=''>Trade Data</p>
+                </div>
+                <div id="streak-stats" className="flex flex-col px-8 relative overflow-x-auto">
+                    {backTestResponse.tradePointDtos ? <table className="table-auto text-left">
+                        <thead className="text-left">
+                            <th className="border-2 px-3 py-3">Time</th>
+                            <th className="border-2 px-3 py-3">Type</th>
+                            <th className="border-2 px-3 py-3">State</th>
+                            <th className="border-2 px-3 py-3">Volume</th>
+                            <th className="border-2 px-3 py-3">Pnl</th>
+                            <th className="border-2 px-3 py-3">Fee</th>
+                            <th className="border-2 px-3 py-3">Log</th>
+                        </thead>
+                        <tbody>
+                            {backTestResponse.tradePointDtos.map((tradePoint) =>
+                                <tr>
+                                    <td className="border-2 px-3 py-3">{new Date(tradePoint.tradeTime).toISOString()}</td>
+                                    <td className="border-2 px-3 py-3">{tradePoint.type}</td>
+                                    <td className="border-2 px-3 py-3">{tradePoint.status}</td>
+                                    <td className="border-2 px-3 py-3">{tradePoint.amount}</td>
+                                    <td className="border-2 px-3 py-3">{tradePoint.pnl}</td>
+                                    <td className="border-2 px-3 py-3">{tradePoint.fee}</td>
+                                    <td className="border-2 px-3 py-3">{tradePoint.log}</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table> : ''}
+
+                </div>
+            </div>
         </div>
-    </>)
+    )
 } 
