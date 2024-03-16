@@ -2,7 +2,7 @@
 import { LegacyRef, useEffect, useRef, useState } from "react"
 import { BackTestResponse } from "../data/models"
 import { CandlestickData, IChartApi, IChartApiBase, SeriesMarkerPosition, SeriesMarkerShape, UTCTimestamp, createChart } from "lightweight-charts"
-
+import { format } from 'date-fns'
 function buildMarkerFrom(tradeTime: number, type: string, status: string, profit: number): {
     'time': UTCTimestamp,
     'position': SeriesMarkerPosition,
@@ -149,11 +149,11 @@ export default function BackTestResult(backTestResponse: BackTestResponse) {
                         </tr>
                         <tr>
                             <th className="border-2 px-3 py-3">Max drawdown value</th>
-                            <td className="border-2 px-3 py-3">{backTestResponse.drawDownVal?.value.toFixed(2)} - Start from {new Date(Number(backTestResponse.drawDownVal?.startDate)).toISOString()} to {new Date(Number(backTestResponse.drawDownVal?.endDate)).toISOString()}</td>
+                            <td className="border-2 px-3 py-3">{backTestResponse.drawDownVal?.value.toFixed(2)} - Start from {format(new Date(Number(backTestResponse.drawDownVal?.startDate)), 'yyyy-MM-dd')} to {format(new Date(Number(backTestResponse.drawDownVal?.endDate)), 'yyyy-MM-dd')}</td>
                         </tr>
                         <tr>
                             <th className="border-2 px-3 py-3">Max drawdown percent</th>
-                            <td className="border-2 px-3 py-3">{backTestResponse.drawdownPer?.value.toFixed(3) * 100}% - Start from {new Date(Number(backTestResponse.drawdownPer?.startDate)).toISOString()} to {new Date(Number(backTestResponse.drawdownPer?.endDate)).toISOString()}</td>
+                            <td className="border-2 px-3 py-3">{backTestResponse.drawdownPer?.value.toFixed(3) * 100}% - Start from {format(new Date(Number(backTestResponse.drawdownPer?.startDate)), 'yyyy-MM-dd')} to {format(new Date(Number(backTestResponse.drawdownPer?.endDate)), 'yyyy-MM-dd')}</td>
                         </tr>
                     </table>
                 </div>
@@ -163,7 +163,7 @@ export default function BackTestResult(backTestResponse: BackTestResponse) {
                     <p className=''>Trade Data</p>
                 </div>
                 <div id="streak-stats" className="flex flex-col px-8 relative overflow-x-auto">
-                    {backTestResponse.tradePointDtos ? <table className="table-auto text-left">
+                    {backTestResponse.tradePointDtos ? <table className="table-auto text-sm text-left">
                         <thead className="text-left">
                             <th className="border-2 px-3 py-3">Time</th>
                             <th className="border-2 px-3 py-3">Type</th>
@@ -176,7 +176,7 @@ export default function BackTestResult(backTestResponse: BackTestResponse) {
                         <tbody>
                             {backTestResponse.tradePointDtos.map((tradePoint) =>
                                 <tr>
-                                    <td className="border-2 px-3 py-3">{new Date(tradePoint.tradeTime).toISOString()}</td>
+                                    <td className="border-2 px-3 py-3">{format(new Date(tradePoint.tradeTime), 'yyyy-MM-dd:hh-mm-ss')}</td>
                                     <td className="border-2 px-3 py-3">{tradePoint.type}</td>
                                     <td className="border-2 px-3 py-3">{tradePoint.status}</td>
                                     <td className="border-2 px-3 py-3">{tradePoint.amount}</td>
