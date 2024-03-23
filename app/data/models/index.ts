@@ -3,6 +3,7 @@ export * from './BackTestRequest';
 export * from './BackTestResponse';
 export * from './BackTestRun';
 export * from './BackTestStatus';
+export * from './BackTestSubmitResponse';
 export * from './BalanceDto';
 export * from './BotOrderType';
 export * from './CandleDto';

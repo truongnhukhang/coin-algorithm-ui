@@ -3,9 +3,9 @@ import { log } from 'console';
 import { createChart } from 'lightweight-charts';
 import Image from 'next/image'
 import { FormEvent, useRef, useState } from 'react';
-import { DefaultApi } from '../data/apis';
-import { BackTestRequestFromJSON, BackTestResponseFromJSON, BackTestResponse } from '../data/models';
-import BackTestResult from '../component/result';
+import { DefaultApi } from '../../data/apis';
+import { BackTestRequestFromJSON, BackTestResponseFromJSON, BackTestResponse } from '../../data/models';
+import BackTestResult from '../../component/result';
 export default function BackTestRequestPage() {
     const [isLoading, setLoading] = useState(false)
     const firstDateOfTheYear = new Date().getFullYear() + '-01' + '-01'
@@ -28,7 +28,7 @@ export default function BackTestRequestPage() {
                 body: formData,
             });
             const result = await response.json();
-            setBackTestResult(BackTestResponseFromJSON(result))
+
         } catch (error) {
             console.error("Error:", error);
         } finally {
@@ -209,13 +209,7 @@ export default function BackTestRequestPage() {
                     </form>
                 </div>
             </div>
-            {!backTestResult['candleDtos'] ? '' :
-                <div className={"md:container flex-col"}>
-                    <div className='font-thin text-gray-900 text-2xl font-mono px-8 pt-6 pb-8 mb-4'>
-                        <p className='underline underline-offset-8 uppercase '>Back test result</p>
-                    </div>
-                    <BackTestResult {...backTestResult as BackTestResponse}></BackTestResult>
-                </div>}
+
         </div>
 
     )

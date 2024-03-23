@@ -18,12 +18,12 @@ import {
     BackTest,
     BackTestFromJSON,
     BackTestToJSON,
-    BackTestResponse,
-    BackTestResponseFromJSON,
-    BackTestResponseToJSON,
     BackTestRun,
     BackTestRunFromJSON,
     BackTestRunToJSON,
+    BackTestSubmitResponse,
+    BackTestSubmitResponseFromJSON,
+    BackTestSubmitResponseToJSON,
 } from '../models';
 
 export interface BackTestRequest {
@@ -47,12 +47,12 @@ export interface DefaultApiInterface {
      * @throws {RequiredError}
      * @memberof DefaultApiInterface
      */
-    backTestRaw(requestParameters: BackTestRequest): Promise<runtime.ApiResponse<BackTestResponse>>;
+    backTestRaw(requestParameters: BackTestRequest): Promise<runtime.ApiResponse<BackTestSubmitResponse>>;
 
     /**
      * Create a back test
      */
-    backTest(requestParameters: BackTestRequest): Promise<BackTestResponse>;
+    backTest(requestParameters: BackTestRequest): Promise<BackTestSubmitResponse>;
 
     /**
      * 
@@ -92,7 +92,7 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     /**
      * Create a back test
      */
-    async backTestRaw(requestParameters: BackTestRequest): Promise<runtime.ApiResponse<BackTestResponse>> {
+    async backTestRaw(requestParameters: BackTestRequest): Promise<runtime.ApiResponse<BackTestSubmitResponse>> {
         const queryParameters: runtime.HTTPQuery = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -129,13 +129,13 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
             body: formParams,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => BackTestResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => BackTestSubmitResponseFromJSON(jsonValue));
     }
 
     /**
      * Create a back test
      */
-    async backTest(requestParameters: BackTestRequest): Promise<BackTestResponse> {
+    async backTest(requestParameters: BackTestRequest): Promise<BackTestSubmitResponse> {
         const response = await this.backTestRaw(requestParameters);
         return await response.value();
     }
