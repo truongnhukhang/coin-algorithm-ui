@@ -14,10 +14,6 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    BackTestRequest,
-    BackTestRequestFromJSON,
-    BackTestRequestFromJSONTyped,
-    BackTestRequestToJSON,
     BalanceDto,
     BalanceDtoFromJSON,
     BalanceDtoFromJSONTyped,
@@ -43,112 +39,105 @@ import {
 /**
  * 
  * @export
- * @interface BackTestResponse
+ * @interface BackTestResult
  */
-export interface BackTestResponse {
-    /**
-     * 
-     * @type {BackTestRequest}
-     * @memberof BackTestResponse
-     */
-    backTestRequest: BackTestRequest;
+export interface BackTestResult {
     /**
      * 
      * @type {number}
-     * @memberof BackTestResponse
+     * @memberof BackTestResult
      */
     pnl: number;
     /**
      * 
      * @type {number}
-     * @memberof BackTestResponse
+     * @memberof BackTestResult
      */
     fee: number;
     /**
      * 
      * @type {number}
-     * @memberof BackTestResponse
+     * @memberof BackTestResult
      */
     total: number;
     /**
      * 
      * @type {number}
-     * @memberof BackTestResponse
+     * @memberof BackTestResult
      */
     numLoose: number;
     /**
      * 
      * @type {number}
-     * @memberof BackTestResponse
+     * @memberof BackTestResult
      */
     numWin: number;
     /**
      * 
      * @type {number}
-     * @memberof BackTestResponse
+     * @memberof BackTestResult
      */
     avglooseStreak: number;
     /**
      * 
      * @type {number}
-     * @memberof BackTestResponse
+     * @memberof BackTestResult
      */
     avgWinStreak: number;
     /**
      * 
      * @type {Array<CandleDto>}
-     * @memberof BackTestResponse
+     * @memberof BackTestResult
      */
     candleDtos: Array<CandleDto>;
     /**
      * 
      * @type {Array<TradePointDto>}
-     * @memberof BackTestResponse
+     * @memberof BackTestResult
      */
     tradePointDtos?: Array<TradePointDto>;
     /**
      * 
      * @type {Array<BalanceDto>}
-     * @memberof BackTestResponse
+     * @memberof BackTestResult
      */
     balanceDtos?: Array<BalanceDto>;
     /**
      * 
      * @type {DrawdownDto}
-     * @memberof BackTestResponse
+     * @memberof BackTestResult
      */
     drawDownVal?: DrawdownDto;
     /**
      * 
      * @type {DrawdownDto}
-     * @memberof BackTestResponse
+     * @memberof BackTestResult
      */
     drawdownPer?: DrawdownDto;
     /**
      * 
      * @type {StreakDto}
-     * @memberof BackTestResponse
+     * @memberof BackTestResult
      */
     looseStreak?: StreakDto;
     /**
      * 
      * @type {StreakDto}
-     * @memberof BackTestResponse
+     * @memberof BackTestResult
      */
     winStreak?: StreakDto;
 }
 
-export function BackTestResponseFromJSON(json: any): BackTestResponse {
-    return BackTestResponseFromJSONTyped(json, false);
+export function BackTestResultFromJSON(json: any): BackTestResult {
+    return BackTestResultFromJSONTyped(json, false);
 }
 
-export function BackTestResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): BackTestResponse {
+export function BackTestResultFromJSONTyped(json: any, ignoreDiscriminator: boolean): BackTestResult {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'backTestRequest': BackTestRequestFromJSON(json['backTestRequest']),
         'pnl': json['pnl'],
         'fee': json['fee'],
         'total': json['total'],
@@ -166,7 +155,7 @@ export function BackTestResponseFromJSONTyped(json: any, ignoreDiscriminator: bo
     };
 }
 
-export function BackTestResponseToJSON(value?: BackTestResponse | null): any {
+export function BackTestResultToJSON(value?: BackTestResult | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -175,7 +164,6 @@ export function BackTestResponseToJSON(value?: BackTestResponse | null): any {
     }
     return {
         
-        'backTestRequest': BackTestRequestToJSON(value.backTestRequest),
         'pnl': value.pnl,
         'fee': value.fee,
         'total': value.total,

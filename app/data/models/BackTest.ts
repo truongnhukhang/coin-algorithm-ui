@@ -72,6 +72,12 @@ export interface BackTest {
      * @memberof BackTest
      */
     status?: BackTestStatus;
+    /**
+     * 
+     * @type {string}
+     * @memberof BackTest
+     */
+    note?: string;
 }
 
 export function BackTestFromJSON(json: any): BackTest {
@@ -91,6 +97,7 @@ export function BackTestFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'backTestRequest': !exists(json, 'backTestRequest') ? undefined : BackTestRequestFromJSON(json['backTestRequest']),
         'botPath': !exists(json, 'botPath') ? undefined : json['botPath'],
         'status': !exists(json, 'status') ? undefined : BackTestStatusFromJSON(json['status']),
+        'note': !exists(json, 'note') ? undefined : json['note'],
     };
 }
 
@@ -110,6 +117,7 @@ export function BackTestToJSON(value?: BackTest | null): any {
         'backTestRequest': BackTestRequestToJSON(value.backTestRequest),
         'botPath': value.botPath,
         'status': BackTestStatusToJSON(value.status),
+        'note': value.note,
     };
 }
 

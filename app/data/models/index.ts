@@ -1,6 +1,6 @@
 export * from './BackTest';
 export * from './BackTestRequest';
-export * from './BackTestResponse';
+export * from './BackTestResult';
 export * from './BackTestRun';
 export * from './BackTestStatus';
 export * from './BackTestSubmitResponse';

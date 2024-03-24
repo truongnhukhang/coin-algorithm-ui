@@ -52,6 +52,12 @@ export interface BackTestRequest {
     takerFee: number;
     /**
      * 
+     * @type {number}
+     * @memberof BackTestRequest
+     */
+    initBalance: number;
+    /**
+     * 
      * @type {string}
      * @memberof BackTestRequest
      */
@@ -126,6 +132,7 @@ export function BackTestRequestFromJSONTyped(json: any, ignoreDiscriminator: boo
         'preFetchBar': json['preFetchBar'],
         'makerFee': json['makerFee'],
         'takerFee': json['takerFee'],
+        'initBalance': json['initBalance'],
         'botPath': !exists(json, 'botPath') ? undefined : json['botPath'],
         'botName': !exists(json, 'botName') ? undefined : json['botName'],
         'botOrderType': !exists(json, 'botOrderType') ? undefined : BotOrderTypeFromJSON(json['botOrderType']),
@@ -152,6 +159,7 @@ export function BackTestRequestToJSON(value?: BackTestRequest | null): any {
         'preFetchBar': value.preFetchBar,
         'makerFee': value.makerFee,
         'takerFee': value.takerFee,
+        'initBalance': value.initBalance,
         'botPath': value.botPath,
         'botName': value.botName,
         'botOrderType': BotOrderTypeToJSON(value.botOrderType),

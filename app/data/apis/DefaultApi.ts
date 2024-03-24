@@ -18,6 +18,9 @@ import {
     BackTest,
     BackTestFromJSON,
     BackTestToJSON,
+    BackTestResult,
+    BackTestResultFromJSON,
+    BackTestResultToJSON,
     BackTestRun,
     BackTestRunFromJSON,
     BackTestRunToJSON,
@@ -53,6 +56,20 @@ export interface DefaultApiInterface {
      * Create a back test
      */
     backTest(requestParameters: BackTestRequest): Promise<BackTestSubmitResponse>;
+
+    /**
+     * 
+     * @summary get backtest run list
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApiInterface
+     */
+    getBackTestResultRaw(): Promise<runtime.ApiResponse<BackTestResult>>;
+
+    /**
+     * get backtest run list
+     */
+    getBackTestResult(): Promise<BackTestResult>;
 
     /**
      * 
@@ -137,6 +154,32 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
      */
     async backTest(requestParameters: BackTestRequest): Promise<BackTestSubmitResponse> {
         const response = await this.backTestRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * get backtest run list
+     */
+    async getBackTestResultRaw(): Promise<runtime.ApiResponse<BackTestResult>> {
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/backtestresult`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => BackTestResultFromJSON(jsonValue));
+    }
+
+    /**
+     * get backtest run list
+     */
+    async getBackTestResult(): Promise<BackTestResult> {
+        const response = await this.getBackTestResultRaw();
         return await response.value();
     }
 

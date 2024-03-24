@@ -4,7 +4,6 @@ import { createChart } from 'lightweight-charts';
 import Image from 'next/image'
 import { FormEvent, useRef, useState } from 'react';
 import { DefaultApi } from '../../data/apis';
-import { BackTestRequestFromJSON, BackTestResponseFromJSON, BackTestResponse } from '../../data/models';
 import BackTestResult from '../../component/result';
 export default function BackTestRequestPage() {
     const [isLoading, setLoading] = useState(false)
@@ -17,9 +16,9 @@ export default function BackTestRequestPage() {
         botOrderType: 'MARKET',
         mainInterval: '5m',
         indicatorParam: "",
-        initBar: '',
+        preFetchBar: '',
+        initBalance: '',
     })
-    const [backTestResult, setBackTestResult] = useState({})
     async function upload(formData: FormData) {
         try {
             setLoading(true)
@@ -56,6 +55,8 @@ export default function BackTestRequestPage() {
             exchange: backTestRequest.exchange,
             botOrderType: backTestRequest.botOrderType,
             mainInterval: backTestRequest.mainInterval,
+            preFetchBar: backTestRequest.preFetchBar,
+            initBalance: backTestRequest.initBalance,
             indicatorParam: indicatorObj
         }));
         formData.append("botJar", file);
@@ -174,13 +175,26 @@ export default function BackTestRequestPage() {
                         </div>
                         <div className="mb-4 flex flex-row items-center">
                             <label className="basis-1/4 text-gray-700 text-sm font-bold mb-2 mr-3" htmlFor="text1">
-                                Init bar
+                                Prefetch bar
                             </label>
                             <input className="flex-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                id="text1" type="text" placeholder="yyyy-mm-dd (2023-12-30)" value={backTestRequest.initBar} onChange={e => {
+                                id="text1" type="text" placeholder="150" value={backTestRequest.preFetchBar} onChange={e => {
                                     setBackTestRequest({
                                         ...backTestRequest,
-                                        initBar: e.target.value
+                                        preFetchBar: e.target.value
+                                    }
+                                    )
+                                }} />
+                        </div>
+                        <div className="mb-4 flex flex-row items-center">
+                            <label className="basis-1/4 text-gray-700 text-sm font-bold mb-2 mr-3" htmlFor="text1">
+                                Initiation balance
+                            </label>
+                            <input className="flex-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                id="text1" type="number" placeholder="1000$" value={backTestRequest.initBalance} onChange={e => {
+                                    setBackTestRequest({
+                                        ...backTestRequest,
+                                        initBalance: e.target.value
                                     }
                                     )
                                 }} />

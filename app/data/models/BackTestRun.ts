@@ -13,13 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import {
-    BackTestResponse,
-    BackTestResponseFromJSON,
-    BackTestResponseFromJSONTyped,
-    BackTestResponseToJSON,
-} from './';
-
 /**
  * 
  * @export
@@ -40,6 +33,66 @@ export interface BackTestRun {
     position: number;
     /**
      * 
+     * @type {number}
+     * @memberof BackTestRun
+     */
+    pnl: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof BackTestRun
+     */
+    fee: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof BackTestRun
+     */
+    total: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof BackTestRun
+     */
+    numLoose: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof BackTestRun
+     */
+    numWin: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof BackTestRun
+     */
+    drawDownVal: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof BackTestRun
+     */
+    drawDownPer: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof BackTestRun
+     */
+    winStreak: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof BackTestRun
+     */
+    loseStreak: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof BackTestRun
+     */
+    len: number;
+    /**
+     * 
      * @type {string}
      * @memberof BackTestRun
      */
@@ -56,12 +109,6 @@ export interface BackTestRun {
      * @memberof BackTestRun
      */
     path?: string;
-    /**
-     * 
-     * @type {BackTestResponse}
-     * @memberof BackTestRun
-     */
-    backTestResponse?: BackTestResponse;
 }
 
 export function BackTestRunFromJSON(json: any): BackTestRun {
@@ -76,10 +123,19 @@ export function BackTestRunFromJSONTyped(json: any, ignoreDiscriminator: boolean
         
         'done': json['done'],
         'position': json['position'],
+        'pnl': json['pnl'],
+        'fee': json['fee'],
+        'total': json['total'],
+        'numLoose': json['numLoose'],
+        'numWin': json['numWin'],
+        'drawDownVal': json['drawDownVal'],
+        'drawDownPer': json['drawDownPer'],
+        'winStreak': json['winStreak'],
+        'loseStreak': json['loseStreak'],
+        'len': json['len'],
         'ident': !exists(json, 'ident') ? undefined : json['ident'],
         'config': !exists(json, 'config') ? undefined : json['config'],
         'path': !exists(json, 'path') ? undefined : json['path'],
-        'backTestResponse': !exists(json, 'backTestResponse') ? undefined : BackTestResponseFromJSON(json['backTestResponse']),
     };
 }
 
@@ -94,10 +150,19 @@ export function BackTestRunToJSON(value?: BackTestRun | null): any {
         
         'done': value.done,
         'position': value.position,
+        'pnl': value.pnl,
+        'fee': value.fee,
+        'total': value.total,
+        'numLoose': value.numLoose,
+        'numWin': value.numWin,
+        'drawDownVal': value.drawDownVal,
+        'drawDownPer': value.drawDownPer,
+        'winStreak': value.winStreak,
+        'loseStreak': value.loseStreak,
+        'len': value.len,
         'ident': value.ident,
         'config': value.config,
         'path': value.path,
-        'backTestResponse': BackTestResponseToJSON(value.backTestResponse),
     };
 }
 
