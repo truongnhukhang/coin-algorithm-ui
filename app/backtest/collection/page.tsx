@@ -9,7 +9,6 @@ import { Configuration } from "@/app/data/runtime";
 import { TableNode } from "@table-library/react-table-library/types/table";
 
 export default function BackTestCollection() {
-    const [backTestCollection, setBackTestCollection] = useState([] as BackTest[])
     const [isLoading, setIsLoading] = useState(true)
     const [colums, setColumns] = useState([
         {
@@ -36,6 +35,50 @@ export default function BackTestCollection() {
         { label: 'Status', renderCell: (item) => item.status },
         { label: 'Note', renderCell: (item) => item.note }
     ] as Column<TableNode>[])
+    const [ids, setIds] = useState([]);
+
+    const handleExpand = (item) => {
+        if (ids.includes(item.id)) {
+            setIds(ids.filter((id) => id !== item.id));
+        } else {
+            setIds(ids.concat(item.id));
+        }
+    };
+    const ROW_PROPS = {
+        onClick: handleExpand,
+    };
+
+    const ROW_OPTIONS = {
+        renderAfterRow: (item: BackTest) => {
+            const data = item.backTestRequest?.indicatorParam
+            const config = Object.keys(data).map(key => `${key}=${data[key]}`).join(",");
+            return (
+
+                <>
+                    {ids.includes(item.id) && (
+                        <tr style={{ display: "flex", gridColumn: "1 / -1" }}>
+                            <td style={{ flex: "1" }}>
+                                <ul
+                                    style={{
+                                        margin: "3px",
+                                        padding: "4px",
+                                        backgroundColor: "#e0e0e0",
+                                    }}
+                                >
+                                    <li>
+                                        <strong>Bot name:</strong> {item.botPath}
+                                    </li>
+                                    <li>
+                                        <strong>Bot config:</strong> {config}
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    )}
+                </>
+            )
+        },
+    };
     const [data, setData] = useState({})
     const theme = useTheme([
         getTheme(),
@@ -62,7 +105,8 @@ export default function BackTestCollection() {
                         <p className='underline underline-offset-8 uppercase '>Your BackTests</p>
                     </div>
                     <div className="px-8 pt-6 pb-8 mb-4">
-                        <CompactTable columns={colums} data={data} theme={theme} layout={{ custom: true, }} />
+                        <CompactTable columns={colums} data={data} theme={theme} layout={{ custom: true, }} rowProps={ROW_PROPS}
+                            rowOptions={ROW_OPTIONS} />
                     </div>
                 </div>
             }
