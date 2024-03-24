@@ -19,7 +19,7 @@ export default function BackTestCollection() {
         {
             label: 'Bot config', renderCell: (item: BackTest) => {
                 const data = item.backTestRequest?.indicatorParam
-                return Object.keys(data).map(key => `${key}=${data[key]}`).join(",");
+                return Object.keys(data).map(key => `${key}=${data[key]}`).join(";");
             }
         },
         {
@@ -51,7 +51,7 @@ export default function BackTestCollection() {
     const ROW_OPTIONS = {
         renderAfterRow: (item: BackTest) => {
             const data = item.backTestRequest?.indicatorParam
-            const config = Object.keys(data).map(key => `${key}=${data[key]}`).join(",");
+            const config = Object.keys(data).map(key => `${key}=${data[key]}`).join(";");
             return (
 
                 <>
