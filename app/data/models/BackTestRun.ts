@@ -96,6 +96,12 @@ export interface BackTestRun {
      * @type {string}
      * @memberof BackTestRun
      */
+    id?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BackTestRun
+     */
     ident?: string;
     /**
      * 
@@ -133,6 +139,7 @@ export function BackTestRunFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'winStreak': json['winStreak'],
         'loseStreak': json['loseStreak'],
         'len': json['len'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
         'ident': !exists(json, 'ident') ? undefined : json['ident'],
         'config': !exists(json, 'config') ? undefined : json['config'],
         'path': !exists(json, 'path') ? undefined : json['path'],
@@ -160,6 +167,7 @@ export function BackTestRunToJSON(value?: BackTestRun | null): any {
         'winStreak': value.winStreak,
         'loseStreak': value.loseStreak,
         'len': value.len,
+        'id': value.id,
         'ident': value.ident,
         'config': value.config,
         'path': value.path,

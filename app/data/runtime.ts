@@ -1,3 +1,6 @@
+'use client'
+
+
 /* tslint:disable */
 /* eslint-disable */
 /**
@@ -11,8 +14,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-
-
 export const BASE_PATH = "http://localhost".replace(/\/+$/, "");
 
 const isBlob = (value: any) => typeof Blob !== 'undefined' && value instanceof Blob;

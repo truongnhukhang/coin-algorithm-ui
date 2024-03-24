@@ -1,3 +1,5 @@
+'use client'
+
 /* tslint:disable */
 /* eslint-disable */
 /**
@@ -11,7 +13,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-
 
 import * as runtime from '../runtime';
 import {
