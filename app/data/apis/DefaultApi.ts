@@ -1,5 +1,3 @@
-'use client'
-
 /* tslint:disable */
 /* eslint-disable */
 /**
@@ -13,6 +11,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+
 
 import * as runtime from '../runtime';
 import {
@@ -33,6 +32,17 @@ import {
 export interface BackTestRequest {
     botJar?: Blob;
     backTestRequest?: string;
+}
+
+export interface GetBackTestResultRequest {
+    ident?: string;
+    position?: string;
+    len?: string;
+}
+
+export interface GetBackTestRunsRequest {
+    sortBy?: string;
+    ident?: string;
 }
 
 /**
@@ -61,30 +71,35 @@ export interface DefaultApiInterface {
     /**
      * 
      * @summary get backtest run list
+     * @param {string} [ident] Ident
+     * @param {string} [position] position
+     * @param {string} [len] len
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApiInterface
      */
-    getBackTestResultRaw(): Promise<runtime.ApiResponse<BackTestResult>>;
+    getBackTestResultRaw(requestParameters: GetBackTestResultRequest): Promise<runtime.ApiResponse<BackTestResult>>;
 
     /**
      * get backtest run list
      */
-    getBackTestResult(): Promise<BackTestResult>;
+    getBackTestResult(requestParameters: GetBackTestResultRequest): Promise<BackTestResult>;
 
     /**
      * 
      * @summary get backtest run list
+     * @param {string} [sortBy] sortBy
+     * @param {string} [ident] Ident
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApiInterface
      */
-    getBackTestRunsRaw(): Promise<runtime.ApiResponse<Array<BackTestRun>>>;
+    getBackTestRunsRaw(requestParameters: GetBackTestRunsRequest): Promise<runtime.ApiResponse<Array<BackTestRun>>>;
 
     /**
      * get backtest run list
      */
-    getBackTestRuns(): Promise<Array<BackTestRun>>;
+    getBackTestRuns(requestParameters: GetBackTestRunsRequest): Promise<Array<BackTestRun>>;
 
     /**
      * 
@@ -161,8 +176,20 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     /**
      * get backtest run list
      */
-    async getBackTestResultRaw(): Promise<runtime.ApiResponse<BackTestResult>> {
+    async getBackTestResultRaw(requestParameters: GetBackTestResultRequest): Promise<runtime.ApiResponse<BackTestResult>> {
         const queryParameters: runtime.HTTPQuery = {};
+
+        if (requestParameters.ident !== undefined) {
+            queryParameters['ident'] = requestParameters.ident;
+        }
+
+        if (requestParameters.position !== undefined) {
+            queryParameters['position'] = requestParameters.position;
+        }
+
+        if (requestParameters.len !== undefined) {
+            queryParameters['len'] = requestParameters.len;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -179,16 +206,24 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     /**
      * get backtest run list
      */
-    async getBackTestResult(): Promise<BackTestResult> {
-        const response = await this.getBackTestResultRaw();
+    async getBackTestResult(requestParameters: GetBackTestResultRequest): Promise<BackTestResult> {
+        const response = await this.getBackTestResultRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * get backtest run list
      */
-    async getBackTestRunsRaw(): Promise<runtime.ApiResponse<Array<BackTestRun>>> {
+    async getBackTestRunsRaw(requestParameters: GetBackTestRunsRequest): Promise<runtime.ApiResponse<Array<BackTestRun>>> {
         const queryParameters: runtime.HTTPQuery = {};
+
+        if (requestParameters.sortBy !== undefined) {
+            queryParameters['sortBy'] = requestParameters.sortBy;
+        }
+
+        if (requestParameters.ident !== undefined) {
+            queryParameters['ident'] = requestParameters.ident;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -205,8 +240,8 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     /**
      * get backtest run list
      */
-    async getBackTestRuns(): Promise<Array<BackTestRun>> {
-        const response = await this.getBackTestRunsRaw();
+    async getBackTestRuns(requestParameters: GetBackTestRunsRequest): Promise<Array<BackTestRun>> {
+        const response = await this.getBackTestRunsRaw(requestParameters);
         return await response.value();
     }
 

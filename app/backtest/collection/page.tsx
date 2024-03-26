@@ -7,6 +7,7 @@ import { useTheme } from '@table-library/react-table-library/theme';
 import { getTheme } from '@table-library/react-table-library/baseline';
 import { Configuration } from "@/app/data/runtime";
 import { TableNode } from "@table-library/react-table-library/types/table";
+import Link from "next/link";
 
 export default function BackTestCollection() {
     const [isLoading, setIsLoading] = useState(true)
@@ -66,11 +67,12 @@ export default function BackTestCollection() {
                                     }}
                                 >
                                     <li>
-                                        <strong>Bot name:</strong> {item.botPath}
+                                        <Link href={`run/${item.ident}`}><strong>Bot name:</strong></Link> {item.botPath}
                                     </li>
                                     <li>
                                         <strong>Bot config:</strong> {config}
                                     </li>
+
                                 </ul>
                             </td>
                         </tr>
