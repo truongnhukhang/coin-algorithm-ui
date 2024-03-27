@@ -4,7 +4,7 @@ import { createChart } from 'lightweight-charts';
 import Image from 'next/image'
 import { FormEvent, useRef, useState } from 'react';
 import { DefaultApi } from '../../data/apis';
-import BackTestResult from '../../component/result';
+import BackTestResultVirtualization from '../../component/result';
 export default function BackTestRequestPage() {
     const [isLoading, setLoading] = useState(false)
     const firstDateOfTheYear = new Date().getFullYear() + '-01' + '-01'

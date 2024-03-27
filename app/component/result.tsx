@@ -1,6 +1,6 @@
 'use client'
 import { LegacyRef, useEffect, useRef, useState } from "react"
-import { BackTestResponse } from "../data/models"
+import { BackTestResult } from "../data/models"
 import { CandlestickData, IChartApi, IChartApiBase, SeriesMarkerPosition, SeriesMarkerShape, UTCTimestamp, createChart } from "lightweight-charts"
 import { format } from 'date-fns'
 function buildMarkerFrom(tradeTime: number, type: string, status: string, profit: number): {
@@ -49,13 +49,13 @@ function buildMarkerFrom(tradeTime: number, type: string, status: string, profit
     }
 }
 
-export default function BackTestResult(backTestResponse: BackTestResponse) {
+export default function BackTestResultVirtualization(resultObj: BackTestResult) {
     const balanceRef = useRef()
     const chartRef = useRef()
     const [chart, setChart] = useState({} as IChartApi)
     const firstChartRender = useRef(true)
     const firstBalanceRender = useRef(true)
-    const candleDtos = backTestResponse.candleDtos;
+    const candleDtos = resultObj.candleDtos;
     useEffect(() => {
         if (chartRef.current && firstChartRender.current) {
             const chart = createChart(chartRef.current, { height: 400 })
@@ -73,8 +73,8 @@ export default function BackTestResult(backTestResponse: BackTestResponse) {
                 })
                 mainSeries.setData(candles)
             }
-            if (backTestResponse.tradePointDtos) {
-                mainSeries.setMarkers(backTestResponse.tradePointDtos.map((p) => {
+            if (resultObj.tradePointDtos) {
+                mainSeries.setMarkers(resultObj.tradePointDtos.map((p) => {
                     return buildMarkerFrom(p.tradeTime, p.type, p.status, p.pnl);
                 }))
             }
@@ -85,10 +85,10 @@ export default function BackTestResult(backTestResponse: BackTestResponse) {
         if (balanceRef.current && firstBalanceRender.current) {
             const balanceChart = createChart(balanceRef.current, { height: 400 })
             const balanceLine = balanceChart.addLineSeries();
-            if (backTestResponse.balanceDtos) {
+            if (resultObj.balanceDtos) {
                 const lines: { 'time': UTCTimestamp, 'value': Number }[] = []
-                for (let i = 0; i < backTestResponse.balanceDtos.length; i++) {
-                    const balanceVal = backTestResponse.balanceDtos[i]
+                for (let i = 0; i < resultObj.balanceDtos.length; i++) {
+                    const balanceVal = resultObj.balanceDtos[i]
                     lines.push({ time: balanceVal.time / 1000 as UTCTimestamp, value: balanceVal.value })
                 }
                 balanceLine.setData(lines)
@@ -121,39 +121,39 @@ export default function BackTestResult(backTestResponse: BackTestResponse) {
                     <table className="table-auto w-2/3 text-left">
                         <tr>
                             <th className="border-2 px-3 py-3">Profit - Fee = PNL</th>
-                            <td className="border-2 px-3 py-3">{backTestResponse.pnl.toFixed(2)} - {backTestResponse.fee.toFixed(2)} = {backTestResponse.total.toFixed(2)}</td>
+                            <td className="border-2 px-3 py-3">{resultObj.pnl.toFixed(2)} - {resultObj.fee.toFixed(2)} = {resultObj.total.toFixed(2)}</td>
                         </tr>
                         <tr>
                             <th className="border-2 px-3 py-3">win trades</th>
-                            <td className="border-2 px-3 py-3">{backTestResponse.numWin}</td>
+                            <td className="border-2 px-3 py-3">{resultObj.numWin}</td>
                         </tr>
                         <tr>
                             <th className="border-2 px-3 py-3">loss trades</th>
-                            <td className="border-2 px-3 py-3">{backTestResponse.numLoose}</td>
+                            <td className="border-2 px-3 py-3">{resultObj.numLoose}</td>
                         </tr>
                         <tr>
                             <th className="border-2 px-3 py-3">Win streak</th>
-                            <td className="border-2 px-3 py-3">{backTestResponse.winStreak?.count} wins , PNL = {backTestResponse.winStreak?.pnl.toFixed(2)}$</td>
+                            <td className="border-2 px-3 py-3">{resultObj.winStreak?.count} wins , PNL = {resultObj.winStreak?.pnl.toFixed(2)}$</td>
                         </tr>
                         <tr>
                             <th className="border-2 px-3 py-3">Loss streak</th>
-                            <td className="border-2 px-3 py-3">{backTestResponse.looseStreak?.count} lost , PNL = {backTestResponse.looseStreak?.pnl.toFixed(2)}$</td>
+                            <td className="border-2 px-3 py-3">{resultObj.looseStreak?.count} lost , PNL = {resultObj.looseStreak?.pnl.toFixed(2)}$</td>
                         </tr>
                         <tr>
                             <th className="border-2 px-3 py-3">avg win streak</th>
-                            <td className="border-2 px-3 py-3">{backTestResponse.avgWinStreak.toFixed(2)}</td>
+                            <td className="border-2 px-3 py-3">{resultObj.avgWinStreak.toFixed(2)}</td>
                         </tr>
                         <tr>
                             <th className="border-2 px-3 py-3">avg loss streak</th>
-                            <td className="border-2 px-3 py-3">{backTestResponse.avglooseStreak.toFixed(2)}</td>
+                            <td className="border-2 px-3 py-3">{resultObj.avglooseStreak.toFixed(2)}</td>
                         </tr>
                         <tr>
                             <th className="border-2 px-3 py-3">Max drawdown value</th>
-                            <td className="border-2 px-3 py-3">{backTestResponse.drawDownVal?.value.toFixed(2)} - Start from {format(new Date(Number(backTestResponse.drawDownVal?.startDate)), 'yyyy-MM-dd')} to {format(new Date(Number(backTestResponse.drawDownVal?.endDate)), 'yyyy-MM-dd')}</td>
+                            <td className="border-2 px-3 py-3">{resultObj.drawDownVal?.value.toFixed(2)} - Start from {format(new Date(Number(resultObj.drawDownVal?.startDate)), 'yyyy-MM-dd')} to {format(new Date(Number(resultObj.drawDownVal?.endDate)), 'yyyy-MM-dd')}</td>
                         </tr>
                         <tr>
                             <th className="border-2 px-3 py-3">Max drawdown percent</th>
-                            <td className="border-2 px-3 py-3">{backTestResponse.drawdownPer?.value.toFixed(3) * 100}% - Start from {format(new Date(Number(backTestResponse.drawdownPer?.startDate)), 'yyyy-MM-dd')} to {format(new Date(Number(backTestResponse.drawdownPer?.endDate)), 'yyyy-MM-dd')}</td>
+                            <td className="border-2 px-3 py-3">{resultObj.drawdownPer?.value.toFixed(3) * 100}% - Start from {format(new Date(Number(resultObj.drawdownPer?.startDate)), 'yyyy-MM-dd')} to {format(new Date(Number(resultObj.drawdownPer?.endDate)), 'yyyy-MM-dd')}</td>
                         </tr>
                     </table>
                 </div>
@@ -163,7 +163,7 @@ export default function BackTestResult(backTestResponse: BackTestResponse) {
                     <p className=''>Trade Data</p>
                 </div>
                 <div id="streak-stats" className="flex flex-col px-8 relative overflow-x-auto">
-                    {backTestResponse.tradePointDtos ? <table className="table-auto text-sm text-left">
+                    {resultObj.tradePointDtos ? <table className="table-auto text-sm text-left">
                         <thead className="text-left">
                             <th className="border-2 px-3 py-3">Time</th>
                             <th className="border-2 px-3 py-3">Type</th>
@@ -174,7 +174,7 @@ export default function BackTestResult(backTestResponse: BackTestResponse) {
                             <th className="border-2 px-3 py-3">Log</th>
                         </thead>
                         <tbody>
-                            {backTestResponse.tradePointDtos.map((tradePoint) =>
+                            {resultObj.tradePointDtos.map((tradePoint) =>
                                 <tr>
                                     <td className="border-2 px-3 py-3">{format(new Date(tradePoint.tradeTime), 'yyyy-MM-dd:hh-mm-ss')}</td>
                                     <td className="border-2 px-3 py-3">{tradePoint.type}</td>

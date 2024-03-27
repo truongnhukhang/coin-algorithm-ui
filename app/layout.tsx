@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="md:container md:mx-auto  bg-white" suppressHydrationWarning={true}>
+        <div className="xl:container xl:mx-auto  bg-white" suppressHydrationWarning={true}>
           <div className="flex flex-row">
             <div className="basis-1/4 border-r-2 min-h-lvh">
               <Navbar ></Navbar>
