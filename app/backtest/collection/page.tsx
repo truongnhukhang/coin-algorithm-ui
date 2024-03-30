@@ -58,23 +58,25 @@ export default function BackTestCollection() {
                 <>
                     {ids.includes(item.id) && (
                         <tr style={{ display: "flex", gridColumn: "1 / -1" }}>
-                            <td style={{ flex: "1" }}>
-                                <ul
-                                    style={{
-                                        margin: "3px",
-                                        padding: "4px",
-                                        backgroundColor: "#e0e0e0",
-                                    }}
-                                >
-                                    <li>
-                                        <Link href={`run/${item.ident}`}><strong>Bot name:</strong></Link> {item.botPath}
-                                    </li>
-                                    <li>
-                                        <strong>Bot config:</strong> {config}
-                                    </li>
+                            <Link href={`run/${item.ident}`}>
+                                <td style={{ flex: "1" }}>
+                                    <ul
+                                        style={{
+                                            margin: "3px",
+                                            padding: "4px",
+                                            backgroundColor: "#e0e0e0",
+                                        }}
+                                    >
+                                        <li>
+                                            <strong>Bot name:</strong>{item.botPath}
+                                        </li>
+                                        <li>
+                                            <strong>Bot config:</strong> {config}
+                                        </li>
 
-                                </ul>
-                            </td>
+                                    </ul>
+                                </td>
+                            </Link>
                         </tr>
                     )}
                 </>
@@ -92,7 +94,7 @@ export default function BackTestCollection() {
     ]);
     useEffect(() => {
         const api = new DefaultApi(new Configuration({ basePath: process.env.BASE_URL }))
-        api.getBackTests().then(val => {
+        api.getBackTests({ page: '1', pageSize: '100' }).then(val => {
             const nodes = val
             setData({ nodes })
         }).finally(() => setIsLoading(false))

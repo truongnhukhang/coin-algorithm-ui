@@ -43,6 +43,13 @@ export interface GetBackTestResultRequest {
 export interface GetBackTestRunsRequest {
     sortBy?: string;
     ident?: string;
+    page?: string;
+    pageSize?: string;
+}
+
+export interface GetBackTestsRequest {
+    page?: string;
+    pageSize?: string;
 }
 
 /**
@@ -90,6 +97,8 @@ export interface DefaultApiInterface {
      * @summary get backtest run list
      * @param {string} [sortBy] sortBy
      * @param {string} [ident] Ident
+     * @param {string} [page] page
+     * @param {string} [pageSize] page size
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApiInterface
@@ -104,16 +113,18 @@ export interface DefaultApiInterface {
     /**
      * 
      * @summary get backtest list
+     * @param {string} [page] page
+     * @param {string} [pageSize] page size
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApiInterface
      */
-    getBackTestsRaw(): Promise<runtime.ApiResponse<Array<BackTest>>>;
+    getBackTestsRaw(requestParameters: GetBackTestsRequest): Promise<runtime.ApiResponse<Array<BackTest>>>;
 
     /**
      * get backtest list
      */
-    getBackTests(): Promise<Array<BackTest>>;
+    getBackTests(requestParameters: GetBackTestsRequest): Promise<Array<BackTest>>;
 
 }
 
@@ -225,6 +236,14 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
             queryParameters['ident'] = requestParameters.ident;
         }
 
+        if (requestParameters.page !== undefined) {
+            queryParameters['page'] = requestParameters.page;
+        }
+
+        if (requestParameters.pageSize !== undefined) {
+            queryParameters['pageSize'] = requestParameters.pageSize;
+        }
+
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
@@ -248,8 +267,16 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     /**
      * get backtest list
      */
-    async getBackTestsRaw(): Promise<runtime.ApiResponse<Array<BackTest>>> {
+    async getBackTestsRaw(requestParameters: GetBackTestsRequest): Promise<runtime.ApiResponse<Array<BackTest>>> {
         const queryParameters: runtime.HTTPQuery = {};
+
+        if (requestParameters.page !== undefined) {
+            queryParameters['page'] = requestParameters.page;
+        }
+
+        if (requestParameters.pageSize !== undefined) {
+            queryParameters['pageSize'] = requestParameters.pageSize;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -266,8 +293,8 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     /**
      * get backtest list
      */
-    async getBackTests(): Promise<Array<BackTest>> {
-        const response = await this.getBackTestsRaw();
+    async getBackTests(requestParameters: GetBackTestsRequest): Promise<Array<BackTest>> {
+        const response = await this.getBackTestsRaw(requestParameters);
         return await response.value();
     }
 
