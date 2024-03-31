@@ -58,25 +58,41 @@ export default function BackTestCollection() {
                 <>
                     {ids.includes(item.id) && (
                         <tr style={{ display: "flex", gridColumn: "1 / -1" }}>
-                            <Link href={`run/${item.ident}`}>
-                                <td style={{ flex: "1" }}>
-                                    <ul
-                                        style={{
-                                            margin: "3px",
-                                            padding: "4px",
-                                            backgroundColor: "#e0e0e0",
-                                        }}
-                                    >
-                                        <li>
-                                            <strong>Bot name:</strong>{item.botPath}
-                                        </li>
-                                        <li>
-                                            <strong>Bot config:</strong> {config}
-                                        </li>
 
-                                    </ul>
-                                </td>
-                            </Link>
+                            <td style={{ flex: "1" }}>
+                                <ul
+                                    style={{
+                                        margin: "3px",
+                                        padding: "4px",
+                                        backgroundColor: "rgb(241 241 241)",
+                                    }}
+                                >
+                                    <li>
+                                        <div className="flex flex-row gap-y-4 gap-x-2">
+                                            <strong className="pd-4 flex-none w-32">Bot name </strong>
+                                            <div>{item.botPath}</div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div className="flex flex-row gap-y-4 gap-x-2"><strong className="pd-4 flex-none w-32">Bot config</strong><div>{config}</div></div>
+
+                                    </li>
+                                    <li>
+                                        <div className="flex flex-row gap-y-4 gap-x-2"><strong className="pd-4 flex-none w-32">Bot note</strong><div className="text-sm">{item.note}</div></div>
+                                    </li>
+                                    <li>
+                                        <div className="flex flex-row gap-y-4 gap-x-2 mt-4 mb-4 justify-center">
+                                            <Link href={`run/${item.ident}`}><button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                                Detail
+                                            </button></Link>
+                                            <button className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </td>
                         </tr>
                     )}
                 </>
@@ -88,7 +104,7 @@ export default function BackTestCollection() {
         getTheme(),
         {
             Table: `
-              --data-table-library_grid-template-columns:  25% 25% 20% 10% 20%;
+              --data-table-library_grid-template-columns:  minmax(min-content,25%) 30% 15% 10% 20%;
             `,
         },
     ]);
@@ -108,8 +124,8 @@ export default function BackTestCollection() {
                     <div className='font-thin text-gray-900 text-2xl font-mono px-8 pt-6 pb-8 mb-4'>
                         <p className='underline underline-offset-8 uppercase '>Your BackTests</p>
                     </div>
-                    <div className="px-8 pt-6 pb-8 mb-4">
-                        <CompactTable columns={colums} data={data} theme={theme} layout={{ custom: true, }} rowProps={ROW_PROPS}
+                    <div className="px-8 pt-6 pb-8 mb-4" style={{ "max-width": "1200px" }}>
+                        <CompactTable columns={colums} data={data} theme={theme} layout={{ custom: true, horizontalScroll: true }} rowProps={ROW_PROPS}
                             rowOptions={ROW_OPTIONS} />
                     </div>
                 </div>

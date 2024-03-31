@@ -2,6 +2,7 @@ export * from './BackTest';
 export * from './BackTestRequest';
 export * from './BackTestResult';
 export * from './BackTestRun';
+export * from './BackTestRunResponse';
 export * from './BackTestStatus';
 export * from './BackTestSubmitResponse';
 export * from './BalanceDto';

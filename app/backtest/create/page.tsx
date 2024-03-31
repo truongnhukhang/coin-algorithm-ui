@@ -205,7 +205,7 @@ export default function BackTestRequestPage() {
                             </div>
                             <div className='block'>
                                 <textarea placeholder={`rsi=14,36,48\nsma=34,55,89`} className="block text-sm appearance-none border rounded mb-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    rows="5" cols="50" onChange={e => {
+                                    rows="10" cols="100" onChange={e => {
                                         setBackTestRequest({
                                             ...backTestRequest,
                                             indicatorParam: e.target.value

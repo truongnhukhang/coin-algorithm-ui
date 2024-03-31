@@ -21,9 +21,9 @@ import {
     BackTestResult,
     BackTestResultFromJSON,
     BackTestResultToJSON,
-    BackTestRun,
-    BackTestRunFromJSON,
-    BackTestRunToJSON,
+    BackTestRunResponse,
+    BackTestRunResponseFromJSON,
+    BackTestRunResponseToJSON,
     BackTestSubmitResponse,
     BackTestSubmitResponseFromJSON,
     BackTestSubmitResponseToJSON,
@@ -77,7 +77,7 @@ export interface DefaultApiInterface {
 
     /**
      * 
-     * @summary get backtest run list
+     * @summary get backtest result
      * @param {string} [ident] Ident
      * @param {string} [position] position
      * @param {string} [len] len
@@ -88,7 +88,7 @@ export interface DefaultApiInterface {
     getBackTestResultRaw(requestParameters: GetBackTestResultRequest): Promise<runtime.ApiResponse<BackTestResult>>;
 
     /**
-     * get backtest run list
+     * get backtest result
      */
     getBackTestResult(requestParameters: GetBackTestResultRequest): Promise<BackTestResult>;
 
@@ -103,12 +103,12 @@ export interface DefaultApiInterface {
      * @throws {RequiredError}
      * @memberof DefaultApiInterface
      */
-    getBackTestRunsRaw(requestParameters: GetBackTestRunsRequest): Promise<runtime.ApiResponse<Array<BackTestRun>>>;
+    getBackTestRunsRaw(requestParameters: GetBackTestRunsRequest): Promise<runtime.ApiResponse<BackTestRunResponse>>;
 
     /**
      * get backtest run list
      */
-    getBackTestRuns(requestParameters: GetBackTestRunsRequest): Promise<Array<BackTestRun>>;
+    getBackTestRuns(requestParameters: GetBackTestRunsRequest): Promise<BackTestRunResponse>;
 
     /**
      * 
@@ -185,7 +185,7 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     }
 
     /**
-     * get backtest run list
+     * get backtest result
      */
     async getBackTestResultRaw(requestParameters: GetBackTestResultRequest): Promise<runtime.ApiResponse<BackTestResult>> {
         const queryParameters: runtime.HTTPQuery = {};
@@ -215,7 +215,7 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     }
 
     /**
-     * get backtest run list
+     * get backtest result
      */
     async getBackTestResult(requestParameters: GetBackTestResultRequest): Promise<BackTestResult> {
         const response = await this.getBackTestResultRaw(requestParameters);
@@ -225,7 +225,7 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     /**
      * get backtest run list
      */
-    async getBackTestRunsRaw(requestParameters: GetBackTestRunsRequest): Promise<runtime.ApiResponse<Array<BackTestRun>>> {
+    async getBackTestRunsRaw(requestParameters: GetBackTestRunsRequest): Promise<runtime.ApiResponse<BackTestRunResponse>> {
         const queryParameters: runtime.HTTPQuery = {};
 
         if (requestParameters.sortBy !== undefined) {
@@ -253,13 +253,13 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(BackTestRunFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => BackTestRunResponseFromJSON(jsonValue));
     }
 
     /**
      * get backtest run list
      */
-    async getBackTestRuns(requestParameters: GetBackTestRunsRequest): Promise<Array<BackTestRun>> {
+    async getBackTestRuns(requestParameters: GetBackTestRunsRequest): Promise<BackTestRunResponse> {
         const response = await this.getBackTestRunsRaw(requestParameters);
         return await response.value();
     }

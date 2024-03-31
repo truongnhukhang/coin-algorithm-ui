@@ -35,6 +35,12 @@ export interface BackTest {
      * @type {number}
      * @memberof BackTest
      */
+    totalBackTestRun: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof BackTest
+     */
     numberParallelism: number;
     /**
      * 
@@ -96,6 +102,7 @@ export function BackTestFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     }
     return {
         
+        'totalBackTestRun': json['totalBackTestRun'],
         'numberParallelism': json['numberParallelism'],
         'priority': json['priority'],
         'id': !exists(json, 'id') ? undefined : json['id'],
@@ -117,6 +124,7 @@ export function BackTestToJSON(value?: BackTest | null): any {
     }
     return {
         
+        'totalBackTestRun': value.totalBackTestRun,
         'numberParallelism': value.numberParallelism,
         'priority': value.priority,
         'id': value.id,
