@@ -17,7 +17,8 @@ export default function BackTestRequestPage() {
         mainInterval: '5m',
         indicatorParam: "",
         preFetchBar: '',
-        initBalance: '',
+        initBalance: '1000',
+        numberWorker: '1',
     })
     async function upload(formData: FormData) {
         try {
@@ -195,6 +196,19 @@ export default function BackTestRequestPage() {
                                     setBackTestRequest({
                                         ...backTestRequest,
                                         initBalance: e.target.value
+                                    }
+                                    )
+                                }} />
+                        </div>
+                        <div className="mb-4 flex flex-row items-center">
+                            <label className="basis-1/4 text-gray-700 text-sm font-bold mb-2 mr-3" htmlFor="text1">
+                                Number worker allocate to this backtest
+                            </label>
+                            <input className="flex-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                id="text1" type="text" placeholder="1" value={backTestRequest.numberWorker} onChange={e => {
+                                    setBackTestRequest({
+                                        ...backTestRequest,
+                                        numberWorker: e.target.value
                                     }
                                     )
                                 }} />
