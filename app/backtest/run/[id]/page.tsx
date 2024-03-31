@@ -11,12 +11,13 @@ import { useRowSelect } from "@table-library/react-table-library/select";
 import { usePagination } from "@table-library/react-table-library/pagination";
 import { SortFn, useSort } from "@table-library/react-table-library/sort";
 
-import router from "next/router";
+import router, { useRouter } from "next/navigation";
 function mergeSortState(sortKey: string, sortReverse: boolean) {
     return sortKey + (sortReverse == false ? '+' : '-');
 }
 const PAGE_SIZE = 30;
 export default function BackTestRun({ params }: { params: { id: string } }) {
+    const router = useRouter()
     const ident = params.id
     const api = new DefaultApi(new Configuration({ basePath: process.env.BASE_URL }))
     const [isLoading, setIsLoading] = useState(true)
