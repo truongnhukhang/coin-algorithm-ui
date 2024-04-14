@@ -94,6 +94,9 @@ export default function BackTestResultVirtualization(resultObj: BackTestResult) 
                             }
                         })
                     }
+                    if (!chartDto.overlay && chartDto.plotList) {
+                        // todo : impl panel indicator
+                    }
                 })
             }
             if (resultObj.tradePointDtos) {
