@@ -56,6 +56,7 @@ export default function BackTestResultVirtualization(resultObj: BackTestResult) 
     const firstChartRender = useRef(true)
     const firstBalanceRender = useRef(true)
     const candleDtos = resultObj.candleDtos;
+    const chartDtos = resultObj.chartDtos;
     useEffect(() => {
         if (chartRef.current && firstChartRender.current) {
             const chart = createChart(chartRef.current, { height: 400 })
@@ -72,6 +73,28 @@ export default function BackTestResultVirtualization(resultObj: BackTestResult) 
                     };
                 })
                 mainSeries.setData(candles)
+            }
+            if (chartDtos) {
+                chartDtos.forEach(chartDto => {
+                    if (chartDto.overlay && chartDto.plotList) {
+                        chartDto.plotList.forEach(plot => {
+                            if (plot.values && plot.style == 'line') {
+                                const lineSeries = chart.addLineSeries({
+                                    color: plot.color,
+                                    title: plot.name,
+                                    priceFormat: { precision: plot.pricePrecision }
+                                });
+                                const lines: { 'time': UTCTimestamp, 'value': Number }[] = []
+                                for (let i = 0; i < candleDtos.length; i++) {
+                                    const time = candleDtos[i].beginTime / 1000 as UTCTimestamp
+                                    const value = plot.values[i]
+                                    lines.push({ time: time, value: value })
+                                }
+                                lineSeries.setData(lines)
+                            }
+                        })
+                    }
+                })
             }
             if (resultObj.tradePointDtos) {
                 mainSeries.setMarkers(resultObj.tradePointDtos.map((p) => {

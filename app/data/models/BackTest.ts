@@ -62,12 +62,6 @@ export interface BackTest {
     id?: string;
     /**
      * 
-     * @type {{ [key: string]: string; }}
-     * @memberof BackTest
-     */
-    configs?: { [key: string]: string; };
-    /**
-     * 
      * @type {string}
      * @memberof BackTest
      */
@@ -113,7 +107,6 @@ export function BackTestFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'priority': json['priority'],
         'totalBackTestRunDone': !exists(json, 'totalBackTestRunDone') ? undefined : json['totalBackTestRunDone'],
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'configs': !exists(json, 'configs') ? undefined : json['configs'],
         'ident': !exists(json, 'ident') ? undefined : json['ident'],
         'backTestRequest': !exists(json, 'backTestRequest') ? undefined : BackTestRequestFromJSON(json['backTestRequest']),
         'botPath': !exists(json, 'botPath') ? undefined : json['botPath'],
@@ -136,7 +129,6 @@ export function BackTestToJSON(value?: BackTest | null): any {
         'priority': value.priority,
         'totalBackTestRunDone': value.totalBackTestRunDone,
         'id': value.id,
-        'configs': value.configs,
         'ident': value.ident,
         'backTestRequest': BackTestRequestToJSON(value.backTestRequest),
         'botPath': value.botPath,

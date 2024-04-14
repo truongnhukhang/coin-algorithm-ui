@@ -58,6 +58,7 @@ export default function BackTestRequestPage() {
             mainInterval: backTestRequest.mainInterval,
             preFetchBar: backTestRequest.preFetchBar,
             initBalance: backTestRequest.initBalance,
+            numberWorker: backTestRequest.numberWorker,
             indicatorParam: indicatorObj
         }));
         formData.append("botJar", file);

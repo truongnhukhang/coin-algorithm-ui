@@ -22,6 +22,10 @@ import {
     CandleDtoFromJSON,
     CandleDtoFromJSONTyped,
     CandleDtoToJSON,
+    ChartDto,
+    ChartDtoFromJSON,
+    ChartDtoFromJSONTyped,
+    ChartDtoToJSON,
     DrawdownDto,
     DrawdownDtoFromJSON,
     DrawdownDtoFromJSONTyped,
@@ -126,6 +130,12 @@ export interface BackTestResult {
      * @memberof BackTestResult
      */
     winStreak?: StreakDto;
+    /**
+     * 
+     * @type {Array<ChartDto>}
+     * @memberof BackTestResult
+     */
+    chartDtos?: Array<ChartDto>;
 }
 
 export function BackTestResultFromJSON(json: any): BackTestResult {
@@ -152,6 +162,7 @@ export function BackTestResultFromJSONTyped(json: any, ignoreDiscriminator: bool
         'drawdownPer': !exists(json, 'drawdownPer') ? undefined : DrawdownDtoFromJSON(json['drawdownPer']),
         'looseStreak': !exists(json, 'looseStreak') ? undefined : StreakDtoFromJSON(json['looseStreak']),
         'winStreak': !exists(json, 'winStreak') ? undefined : StreakDtoFromJSON(json['winStreak']),
+        'chartDtos': !exists(json, 'chartDtos') ? undefined : ((json['chartDtos'] as Array<any>).map(ChartDtoFromJSON)),
     };
 }
 
@@ -178,6 +189,7 @@ export function BackTestResultToJSON(value?: BackTestResult | null): any {
         'drawdownPer': DrawdownDtoToJSON(value.drawdownPer),
         'looseStreak': StreakDtoToJSON(value.looseStreak),
         'winStreak': StreakDtoToJSON(value.winStreak),
+        'chartDtos': value.chartDtos === undefined ? undefined : ((value.chartDtos as Array<any>).map(ChartDtoToJSON)),
     };
 }
 
