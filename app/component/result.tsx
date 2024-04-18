@@ -48,7 +48,6 @@ function buildMarkerFrom(tradeTime: number, type: string, status: string, profit
         }
     }
 }
-
 export default function BackTestResultVirtualization(resultObj: BackTestResult) {
     const balanceRef = useRef()
     const chartRef = useRef()
@@ -59,8 +58,11 @@ export default function BackTestResultVirtualization(resultObj: BackTestResult) 
     const chartDtos = resultObj.chartDtos;
     useEffect(() => {
         if (chartRef.current && firstChartRender.current) {
-            const chart = createChart(chartRef.current, { height: 400 })
+            const chartList = [] as IChartApi[]
+            const chart = createChart(chartRef.current, { height: 400, timeScale: { timeVisible: true } })
+            chartList.push(chart)
             const mainSeries = chart.addCandlestickSeries();
+
             // Set the data for the Main Series
             if (candleDtos) {
                 const candles = candleDtos.map((c) => {
@@ -96,6 +98,34 @@ export default function BackTestResultVirtualization(resultObj: BackTestResult) 
                     }
                     if (!chartDto.overlay && chartDto.plotList) {
                         // todo : impl panel indicator
+                        const subChart = createChart(chartRef.current, { height: 200, timeScale: { timeVisible: true } })
+                        chartDto.plotList.forEach(plot => {
+                            if (plot.values && plot.style == 'line') {
+                                const lineSeries = subChart.addLineSeries({
+                                    color: plot.color,
+                                    title: plot.name,
+                                    priceFormat: { precision: 2 }
+                                });
+                                const lines: { 'time': UTCTimestamp, 'value': Number }[] = []
+                                for (let i = 0; i < candleDtos.length; i++) {
+                                    const time = candleDtos[i].beginTime / 1000 as UTCTimestamp
+                                    const value = plot.values[i]
+                                    lines.push({ time: time, value: value })
+                                }
+                                lineSeries.setData(lines)
+                            }
+                        })
+                        chartList.push(subChart)
+                    }
+                    for (let i = 0; i < chartList.length; i++) {
+                        const tmpChart = chartList[i]
+                        tmpChart.timeScale().subscribeVisibleLogicalRangeChange(timeRange => {
+                            for (let j = 0; j < chartList.length; j++) {
+                                if (chartList[j] != tmpChart) {
+                                    chartList[j].timeScale().setVisibleLogicalRange(timeRange);
+                                }
+                            }
+                        })
                     }
                 })
             }
