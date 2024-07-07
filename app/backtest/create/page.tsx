@@ -19,6 +19,8 @@ export default function BackTestRequestPage() {
         preFetchBar: '',
         initBalance: '1000',
         numberWorker: '1',
+        botPath: 'localhost:8888',
+        botName: 'my first bot'
     })
     async function upload(formData: FormData) {
         try {
@@ -59,9 +61,10 @@ export default function BackTestRequestPage() {
             preFetchBar: backTestRequest.preFetchBar,
             initBalance: backTestRequest.initBalance,
             numberWorker: backTestRequest.numberWorker,
+            botPath: backTestRequest.botPath,
+            botName: backTestRequest.botName,
             indicatorParam: indicatorObj
         }));
-        formData.append("botJar", file);
         upload(formData)
     }
     return (
@@ -169,11 +172,31 @@ export default function BackTestRequestPage() {
                         <div className='font-thin text-gray-900 text-lg font-mono pt-6 pb-8 mb-4'>
                             <p>Algorithm Config</p>
                         </div>
-                        <div className="mb-4 flex  flex-row items-center">
-                            <label className="basis-1/4 text-gray-700 text-sm font-bold mb-2 mr-3" htmlFor="file">
-                                Upload Bot
+                        <div className="mb-4 flex flex-row items-center">
+                            <label className="basis-1/4 text-gray-700 text-sm font-bold mb-2 mr-3" htmlFor="text1">
+                                Bot name
                             </label>
-                            <input className="flex-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="file" type="file" />
+                            <input className="flex-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                id="text1" type="text" placeholder="localhost:8088" value={backTestRequest.botName} onChange={e => {
+                                    setBackTestRequest({
+                                        ...backTestRequest,
+                                        botName: e.target.value
+                                    }
+                                    )
+                                }} />
+                        </div>
+                        <div className="mb-4 flex flex-row items-center">
+                            <label className="basis-1/4 text-gray-700 text-sm font-bold mb-2 mr-3" htmlFor="text1">
+                                Bot path
+                            </label>
+                            <input className="flex-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                id="text1" type="text" placeholder="localhost:8088" value={backTestRequest.botPath} onChange={e => {
+                                    setBackTestRequest({
+                                        ...backTestRequest,
+                                        botPath: e.target.value
+                                    }
+                                    )
+                                }} />
                         </div>
                         <div className="mb-4 flex flex-row items-center">
                             <label className="basis-1/4 text-gray-700 text-sm font-bold mb-2 mr-3" htmlFor="text1">
