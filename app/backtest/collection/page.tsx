@@ -19,7 +19,7 @@ export default function BackTestCollection() {
         },
         {
             label: 'Bot config', renderCell: (item: BackTest) => {
-                const data = item.backTestRequest?.indicatorParam
+                const data = item.backTestRequest?.indicatorParam as any
                 return Object.keys(data).map(key => `${key}=${data[key]}`).join(";");
             }
         },
@@ -38,7 +38,7 @@ export default function BackTestCollection() {
     ] as Column<TableNode>[])
     const [ids, setIds] = useState([]);
 
-    const handleExpand = (item) => {
+    const handleExpand = (item: { id: ConcatArray<never>; }) => {
         if (ids.includes(item.id)) {
             setIds(ids.filter((id) => id !== item.id));
         } else {
@@ -82,7 +82,7 @@ export default function BackTestCollection() {
                                     </li>
                                     <li>
                                         <div className="flex flex-row gap-y-4 gap-x-2 mt-4 mb-4 justify-center">
-                                            <Link href={`run/${item.ident}`}><button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                            <Link href={`run?ident=${item.ident}`}><button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                                 Detail
                                             </button></Link>
                                             <button className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">

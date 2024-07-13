@@ -11,14 +11,16 @@ import { useRowSelect } from "@table-library/react-table-library/select";
 import { usePagination } from "@table-library/react-table-library/pagination";
 import { SortFn, useSort } from "@table-library/react-table-library/sort";
 
-import router, { useRouter } from "next/navigation";
+import router, { useRouter, useSearchParams } from "next/navigation";
 function mergeSortState(sortKey: string, sortReverse: boolean) {
     return sortKey + (sortReverse == false ? '+' : '-');
 }
 const PAGE_SIZE = 30;
-export default function BackTestRun({ params }: { params: { id: string } }) {
+export const dynamicParams = true
+export default function BackTestRun() {
     const router = useRouter()
-    const ident = params.id
+    const params = useSearchParams()
+    const ident = params.get("ident")
     const api = new DefaultApi(new Configuration({ basePath: process.env.BASE_URL }))
     const [isLoading, setIsLoading] = useState(true)
     const [total, setTotal] = useState(0)
@@ -80,7 +82,7 @@ export default function BackTestRun({ params }: { params: { id: string } }) {
     const select = useRowSelect(data, {
         onChange: (action, state) => {
             const btRun = data.nodes.find(r => r.id == state.id) as unknown as BackTestRun
-            router.push(`/backtest/detail/${btRun.ident}?position=${btRun.position}&len=${btRun.len}`)
+            router.push(`/backtest/detail?ident=${btRun.ident}&position=${btRun.position}&len=${btRun.len}`)
         },
     });
     const theme = useTheme([

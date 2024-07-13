@@ -231,7 +231,7 @@ export default function BackTestResultVirtualization(resultObj: BackTestResult) 
                         </thead>
                         <tbody>
                             {resultObj.tradePointDtos.map((tradePoint) =>
-                                <tr>
+                                <tr key={tradePoint.tradeTime}>
                                     <td className="border-2 px-3 py-3">{format(new Date(tradePoint.tradeTime), 'yyyy-MM-dd:hh-mm-ss')}</td>
                                     <td className="border-2 px-3 py-3">{tradePoint.type}</td>
                                     <td className="border-2 px-3 py-3">{tradePoint.status}</td>

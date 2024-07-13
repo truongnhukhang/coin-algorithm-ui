@@ -5,14 +5,14 @@ import { BackTestResult } from "@/app/data/models";
 import { Configuration } from "@/app/data/runtime";
 import { useEffect, useState } from "react";
 import { useSearchParams } from 'next/navigation'
-
-export default function BackTestResultDetail({ params }: { params: { id: string } }) {
+export const dynamicParams = true
+export default function BackTestResultDetail() {
     const [backTestResult, setBackTestResult] = useState({} as unknown as BackTestResult)
     const [isLoading, setIsLoading] = useState(true)
     const searchParams = useSearchParams();
     useEffect(() => {
         const api = new DefaultApi(new Configuration({ basePath: process.env.BASE_URL }))
-        api.getBackTestResult({ ident: params.id, position: searchParams.get('position') + "", len: searchParams.get('len') + "" }).then(val => {
+        api.getBackTestResult({ ident: searchParams.get('ident') + "", position: searchParams.get('position') + "", len: searchParams.get('len') + "" }).then(val => {
             setBackTestResult(val)
         }).finally(() => setIsLoading(false))
     }, [])
