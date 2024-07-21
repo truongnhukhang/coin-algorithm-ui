@@ -27,11 +27,23 @@ import {
     BackTestSubmitResponse,
     BackTestSubmitResponseFromJSON,
     BackTestSubmitResponseToJSON,
+    Online,
+    OnlineFromJSON,
+    OnlineToJSON,
+    OnlineCreateResponse,
+    OnlineCreateResponseFromJSON,
+    OnlineCreateResponseToJSON,
+    OnlineRequest,
+    OnlineRequestFromJSON,
+    OnlineRequestToJSON,
 } from '../models';
 
 export interface BackTestRequest {
-    botJar?: Blob;
     backTestRequest?: string;
+}
+
+export interface CreateOnlineRequest {
+    onlineRequest?: OnlineRequest;
 }
 
 export interface GetBackTestResultRequest {
@@ -52,6 +64,11 @@ export interface GetBackTestsRequest {
     pageSize?: string;
 }
 
+export interface GetOnlineListRequest {
+    page?: string;
+    pageSize?: string;
+}
+
 /**
  * DefaultApi - interface
  * 
@@ -62,7 +79,6 @@ export interface DefaultApiInterface {
     /**
      * 
      * @summary Create a back test
-     * @param {Blob} [botJar] 
      * @param {string} [backTestRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -74,6 +90,21 @@ export interface DefaultApiInterface {
      * Create a back test
      */
     backTest(requestParameters: BackTestRequest): Promise<BackTestSubmitResponse>;
+
+    /**
+     * 
+     * @summary Create an online
+     * @param {OnlineRequest} [onlineRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApiInterface
+     */
+    createOnlineRaw(requestParameters: CreateOnlineRequest): Promise<runtime.ApiResponse<OnlineCreateResponse>>;
+
+    /**
+     * Create an online
+     */
+    createOnline(requestParameters: CreateOnlineRequest): Promise<OnlineCreateResponse>;
 
     /**
      * 
@@ -126,6 +157,22 @@ export interface DefaultApiInterface {
      */
     getBackTests(requestParameters: GetBackTestsRequest): Promise<Array<BackTest>>;
 
+    /**
+     * 
+     * @summary get online list
+     * @param {string} [page] page
+     * @param {string} [pageSize] page size
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApiInterface
+     */
+    getOnlineListRaw(requestParameters: GetOnlineListRequest): Promise<runtime.ApiResponse<Array<Online>>>;
+
+    /**
+     * get online list
+     */
+    getOnlineList(requestParameters: GetOnlineListRequest): Promise<Array<Online>>;
+
 }
 
 /**
@@ -149,16 +196,10 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
 
         let formParams: { append(param: string, value: any): any };
         let useForm = false;
-        // use FormData to transmit files using content-type "multipart/form-data"
-        useForm = canConsumeForm;
         if (useForm) {
             formParams = new FormData();
         } else {
             formParams = new URLSearchParams();
-        }
-
-        if (requestParameters.botJar !== undefined) {
-            formParams.append('botJar', requestParameters.botJar as any);
         }
 
         if (requestParameters.backTestRequest !== undefined) {
@@ -181,6 +222,35 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
      */
     async backTest(requestParameters: BackTestRequest): Promise<BackTestSubmitResponse> {
         const response = await this.backTestRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Create an online
+     */
+    async createOnlineRaw(requestParameters: CreateOnlineRequest): Promise<runtime.ApiResponse<OnlineCreateResponse>> {
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/online`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: OnlineRequestToJSON(requestParameters.onlineRequest),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => OnlineCreateResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Create an online
+     */
+    async createOnline(requestParameters: CreateOnlineRequest): Promise<OnlineCreateResponse> {
+        const response = await this.createOnlineRaw(requestParameters);
         return await response.value();
     }
 
@@ -295,6 +365,40 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
      */
     async getBackTests(requestParameters: GetBackTestsRequest): Promise<Array<BackTest>> {
         const response = await this.getBackTestsRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * get online list
+     */
+    async getOnlineListRaw(requestParameters: GetOnlineListRequest): Promise<runtime.ApiResponse<Array<Online>>> {
+        const queryParameters: runtime.HTTPQuery = {};
+
+        if (requestParameters.page !== undefined) {
+            queryParameters['page'] = requestParameters.page;
+        }
+
+        if (requestParameters.pageSize !== undefined) {
+            queryParameters['pageSize'] = requestParameters.pageSize;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/online`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(OnlineFromJSON));
+    }
+
+    /**
+     * get online list
+     */
+    async getOnlineList(requestParameters: GetOnlineListRequest): Promise<Array<Online>> {
+        const response = await this.getOnlineListRaw(requestParameters);
         return await response.value();
     }
 

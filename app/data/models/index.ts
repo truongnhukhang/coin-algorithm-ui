@@ -14,3 +14,6 @@ export * from './InlineObject';
 export * from './PlotDto';
 export * from './StreakDto';
 export * from './TradePointDto';
+export * from './Online'
+export * from './OnlineRequest'
+export * from './OnlineCreateResponse'
