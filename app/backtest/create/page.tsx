@@ -71,7 +71,7 @@ export default function BackTestRequestPage() {
                 body: formData,
             });
             const result = await response.json();
-            setSubmitStatus({ 'Submit successfully': result })
+            setSubmitStatus({ 'Submit successfully': result.ident })
         } catch (error) {
             setSubmitStatus({ 'error when submit': error + '' })
         } finally {
@@ -102,9 +102,10 @@ export default function BackTestRequestPage() {
                 starDateStr: backTestRequest.startDate,
                 endDateStr: backTestRequest.endDate,
                 exchange: backTestRequest.exchange,
+                coin: backTestRequest.coin,
                 botOrderType: backTestRequest.botOrderType,
                 makerFee: backTestRequest.makerFee,
-                takeFee: backTestRequest.takerFee,
+                takerFee: backTestRequest.takerFee,
                 mainInterval: backTestRequest.mainInterval,
                 preFetchBar: backTestRequest.preFetchBar,
                 initBalance: backTestRequest.initBalance,
